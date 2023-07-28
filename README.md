@@ -8,4 +8,15 @@ Data might be ingested in two ways:
  - Initial patient data via files that periodically arrives from insurance companies.
  - Stream of changes originated from consumtion layer. Usually these changes are made by patients themselfs, e.g. adding new address.
  ### Requirements
+ #### Batching Ingestion
  
+ - Initial data files represents patient information in standard  form of electronic health records. The format is called [FHIR](https://www.hl7.org/fhir/).
+ - Inital data files are in **json** format and represents a set of electronic records.
+ - Files are taken from data source system on a daily basis, stored, processed and ingested to consumption layer.
+#### Streaming Ingestion
+- Being initially ingested to the system, patient data is mutable and can be modified by patients themselfs.
+- Being adjusted data feed is sent back to the pipeline as a stream event.
+- The event is stored in platform, merged to patient profile and becomes available for consumtion.
+
+## Architecture
+
