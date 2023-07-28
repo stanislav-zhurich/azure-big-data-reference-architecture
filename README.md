@@ -25,4 +25,10 @@ The following case assume data ingestion in following ways:
 As for architecture foundation we rely on  [Lakehouse architecture](https://dbricks.co/38dVKYc) concept that addresses many of the challenges applicable for traditional data architectures. With this approach there is no longer a strong separation between data lake and data warehouse, instead the outputs from the lake are served using the [Delta Lake format](https://docs.databricks.com/delta/index.html). When it comes to technical implementation the solution will leverage [Microsoft Azure Synapse Analytics](https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) that is a powerfull platform that brings together support of multiple data related services available in Azure.
 ![Component View](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/component-view-v1.drawio.png)
 
-
+ 1. Patient data periodically is ingested by **Synapse Pipeline Copy Activity** to landing zone (**Bronze**). Observation data (avro format) is being streamed via **Event Hub**. 
+ 2. Events are consumed by **Synapse Spark Job** and stored into landing zone (**Bronze**).
+ 3. **Synapse Spark Data Preparation Job** validate and transform raw data to canonical form and stores it in **Delta** format to **Silver zone**. 
+ 4. **Synapse Spark Data Aggregation Job** aggregates data and makes it readt to be consumed by Serving Layer by storing on **Golder zone**.
+ 5. **Synapse Serverless SQL Pool** leverages external storage as a data source and expose data for consumption via SQL queries.
+ 6. Aggregated and processed data is also ingested into **Event Hub** to be consumed on runtime.
+ 7. **Azure Stream Analytics** tool is used to read data from Event Hub and identify any anomalies. All detected anomalies are sent to different Event Hub topic.
