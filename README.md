@@ -22,6 +22,7 @@ The following case assume data ingestion in following ways:
 - Observation data should be streamed and constantly monitored to understand if there are any anomalies in measurements.
 
 ## Architecture
-Reference project is built on top of  [lakehouse architecture](https://dbricks.co/38dVKYc) architecture pattern that addresses many of the challenges of traditional data architectures (data warehouse or data lake).
-Lakehouse combines the low cost and flexibility of data lakes with the reliability and performance of data warehouses, it provides ETL and stream processing allong with ACID transactions. 
+As for architecture foundation we rely on  [Lakehouse architecture](https://dbricks.co/38dVKYc) concept that addresses many of the challenges applicable for traditional data architectures. With this approach there is no longer a strong separation between data lake and data warehouse, instead the outputs from the lake are served using the [Delta Lake format](https://docs.databricks.com/delta/index.html). When it comes to technical implementation the solution will leverage [Microsoft Azure Synapse Analytics](https://learn.microsoft.com/en-us/azure/synapse-analytics/overview-what-is) that is a powerfull platform that brings together support of multiple data related services available in Azure.
+![Component View](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/component-view-v1.drawio.png)
+
 
