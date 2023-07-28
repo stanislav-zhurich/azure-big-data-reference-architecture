@@ -32,3 +32,14 @@ As for architecture foundation we rely on  [Lakehouse architecture](https://dbri
  5. **Synapse Serverless SQL Pool** leverages external storage as a data source and expose data for consumption via SQL queries.
  6. Aggregated and processed data is also ingested into **Event Hub** to be consumed on runtime.
  7. **Azure Stream Analytics** tool is used to read data from Event Hub and identify any anomalies. All detected anomalies are sent to different Event Hub topic.
+### Cost Consideration
+|Service| Free tier |Pricing Options |Cost|
+|--|--|--|--|
+|Blob Storage|5 GB locally redundant storage (LRS) hot block with 20,000 read and 10,000 write operations||
+|Data Factory|5 low-frequency activities||
+|Key Vault|10,000 transactions RSA 2048-bit keys or secret operations, Standard tier||
+|Virtual Network|50 virtual networks|||
+|Event Hub||$0.015/hour per Throughput Unit (MB/s ingress and 2 MB/s egress)|
+|Stream Analytics||$0.405 per hours||
+|Synapse Spark Pool|120 free vCore-hours per month until November 30, 2023| $0.155 per vCore-hour|
+
