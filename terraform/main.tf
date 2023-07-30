@@ -137,7 +137,7 @@ resource "azurerm_synapse_firewall_rule" "allow_all_rule" {
 }
 
 resource "azurerm_synapse_linked_service" "patient_data_source_linked_service" {
-  name                 = "patient_data_source_linked_service"
+  name                 = "blobStorageLinkedService1"
   synapse_workspace_id = azurerm_synapse_workspace.synapse_workspace.id
   type                 = "AzureBlobStorage"
   type_properties_json = <<JSON
@@ -146,10 +146,43 @@ resource "azurerm_synapse_linked_service" "patient_data_source_linked_service" {
 }
 JSON
   depends_on = [
-    azurerm_synapse_firewall_rule.allow_all_rule,
+    azurerm_synapse_firewall_rule.allow_all_rule
   ]
 }
 
+/* resource "azurerm_key_vault" "key_vault" {
+  name                     = "bigdata-project-kv"
+  location                 = azurerm_resource_group.resource_group.location
+  resource_group_name      = azurerm_resource_group.resource_group.name
+  tenant_id                = data.azuread_client_config.current.tenant_id
+  sku_name                 = "standard"
+  purge_protection_enabled = true
+} */
 
+# resource "azurerm_key_vault_access_policy" "deployer_keyvault_policy" {
+#   key_vault_id = azurerm_key_vault.key_vault.id
+#   tenant_id    = data.azuread_client_config.current.tenant_id
+#   object_id    = data.azuread_client_config.current.object_id
+#   secret_permissions = [
+#     "Get", "List", "Set", "Delete"
+#   ]
+# }
+
+# resource "azurerm_key_vault_access_policy" "synapse_keyvault_policy" {
+#   key_vault_id = azurerm_key_vault.key_vault.id
+#   tenant_id    = azurerm_synapse_workspace.synapse_workspace.identity[0].tenant_id
+#   object_id    = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id
+
+#   secret_permissions = [
+#     "Get", "List", "Set", "Delete"
+#   ]
+# }
+
+# resource "azurerm_key_vault_secret" "blob_access_key_secret" {
+#   depends_on = [ azurerm_key_vault_access_policy.deployer_keyvault_policy]
+#   name         = "blob-storage-access-key"
+#   value = azurerm_storage_account.source_storage_account.primary_access_key
+#   key_vault_id = azurerm_key_vault.key_vault.id
+# }
 
 
