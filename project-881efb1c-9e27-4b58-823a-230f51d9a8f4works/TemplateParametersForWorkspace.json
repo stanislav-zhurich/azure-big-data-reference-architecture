@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "project-881efb1c-9e27-4b58-823a-230f51d9a8f4works"
+		},
+		"project-881efb1c-9e27-4b58-823a-230f51d9a8f4works-WorkspaceDefaultSqlServer_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:project-881efb1c-9e27-4b58-823a-230f51d9a8f4works.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"blobStorageLinkedService1_properties_typeProperties_serviceEndpoint": {
+			"value": "https://srcproject881efb1c9e274b.blob.core.windows.net/"
+		},
+		"project-881efb1c-9e27-4b58-823a-230f51d9a8f4works-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://dlproject881efb1c9e274b5.dfs.core.windows.net"
+		}
+	}
+}
