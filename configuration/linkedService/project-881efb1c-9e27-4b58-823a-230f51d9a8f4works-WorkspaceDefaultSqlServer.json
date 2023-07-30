@@ -1,0 +1,20 @@
+{
+	"name": "project-881efb1c-9e27-4b58-823a-230f51d9a8f4works-WorkspaceDefaultSqlServer",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"typeProperties": {
+			"connectionString": "Data Source=tcp:project-881efb1c-9e27-4b58-823a-230f51d9a8f4works.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"parameters": {
+			"DBName": {
+				"type": "String"
+			}
+		},
+		"type": "AzureSqlDW",
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		},
+		"annotations": []
+	}
+}
