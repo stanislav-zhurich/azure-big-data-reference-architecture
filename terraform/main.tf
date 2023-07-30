@@ -142,7 +142,8 @@ resource "azurerm_synapse_linked_service" "patient_data_source_linked_service" {
   type                 = "AzureBlobStorage"
   type_properties_json = <<JSON
 {
-  "connectionString": "${azurerm_storage_account.source_storage_account.primary_connection_string}"
+  "serviceEndpoint": "https://${azurerm_storage_account.source_storage_account.name}.blob.core.windows.net/",
+  "accountKind": "StorageV2"
 }
 JSON
   depends_on = [
@@ -150,39 +151,45 @@ JSON
   ]
 }
 
-/* resource "azurerm_key_vault" "key_vault" {
+resource "azurerm_key_vault" "key_vault" {
   name                     = "bigdata-project-kv"
   location                 = azurerm_resource_group.resource_group.location
   resource_group_name      = azurerm_resource_group.resource_group.name
   tenant_id                = data.azuread_client_config.current.tenant_id
   sku_name                 = "standard"
   purge_protection_enabled = true
-} */
+} 
 
-# resource "azurerm_key_vault_access_policy" "deployer_keyvault_policy" {
-#   key_vault_id = azurerm_key_vault.key_vault.id
-#   tenant_id    = data.azuread_client_config.current.tenant_id
-#   object_id    = data.azuread_client_config.current.object_id
-#   secret_permissions = [
-#     "Get", "List", "Set", "Delete"
-#   ]
-# }
+resource "azurerm_key_vault_access_policy" "deployer_keyvault_policy" {
+   key_vault_id = azurerm_key_vault.key_vault.id
+   tenant_id    = data.azuread_client_config.current.tenant_id
+   object_id    = data.azuread_client_config.current.object_id
+   secret_permissions = [
+     "Get", "List", "Set", "Delete", "Recover"
+   ]
+}
 
-# resource "azurerm_key_vault_access_policy" "synapse_keyvault_policy" {
-#   key_vault_id = azurerm_key_vault.key_vault.id
-#   tenant_id    = azurerm_synapse_workspace.synapse_workspace.identity[0].tenant_id
-#   object_id    = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id
+resource "azurerm_key_vault_access_policy" "synapse_keyvault_policy" {
+   key_vault_id = azurerm_key_vault.key_vault.id
+   tenant_id    = azurerm_synapse_workspace.synapse_workspace.identity[0].tenant_id
+   object_id    = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id
 
-#   secret_permissions = [
-#     "Get", "List", "Set", "Delete"
-#   ]
-# }
+   secret_permissions = [
+     "Get", "List", "Set", "Delete", "Recover"
+   ]
+ }
 
-# resource "azurerm_key_vault_secret" "blob_access_key_secret" {
-#   depends_on = [ azurerm_key_vault_access_policy.deployer_keyvault_policy]
-#   name         = "blob-storage-access-key"
-#   value = azurerm_storage_account.source_storage_account.primary_access_key
-#   key_vault_id = azurerm_key_vault.key_vault.id
-# }
+resource "azurerm_key_vault_secret" "blob_connection_string_secret" {
+   depends_on = [ azurerm_key_vault_access_policy.deployer_keyvault_policy]
+   name         = "blob-storage-access-key"
+   value = azurerm_storage_account.source_storage_account.primary_connection_string
+   key_vault_id = azurerm_key_vault.key_vault.id
+}
 
+resource "azurerm_key_vault_secret" "blob_connection_account_name" {
+   depends_on = [ azurerm_key_vault_access_policy.deployer_keyvault_policy]
+   name         = "blob-storage-account-name"
+   value = azurerm_storage_account.source_storage_account.name
+   key_vault_id = azurerm_key_vault.key_vault.id
+}
 
