@@ -137,13 +137,34 @@ resource "azurerm_synapse_firewall_rule" "allow_all_rule" {
 }
 
 resource "azurerm_synapse_linked_service" "patient_data_source_linked_service" {
-  name                 = "blobStorageLinkedService1"
+  name                 = "blobStorageLinkedService"
   synapse_workspace_id = azurerm_synapse_workspace.synapse_workspace.id
   type                 = "AzureBlobStorage"
+
   type_properties_json = <<JSON
 {
-  "serviceEndpoint": "https://${azurerm_storage_account.source_storage_account.name}.blob.core.windows.net/",
-  "accountKind": "StorageV2"
+   "connectionString": {
+                "type": "AzureKeyVaultSecret",
+                "store": {
+                    "referenceName": "${azurerm_synapse_linked_service.key_vault_linked_service.name}",
+                    "type": "LinkedServiceReference"
+                },
+                "secretName": "${azurerm_key_vault_secret.blob_connection_string_secret.name}"
+            }
+}
+JSON
+  depends_on = [
+    azurerm_synapse_firewall_rule.allow_all_rule
+  ]
+}
+
+resource "azurerm_synapse_linked_service" "key_vault_linked_service" {
+  name                 = "keyVaultLinkedService"
+  synapse_workspace_id = azurerm_synapse_workspace.synapse_workspace.id
+  type                 = "AzureKeyVault"
+  type_properties_json = <<JSON
+{
+  "baseUrl": "${azurerm_key_vault.key_vault.vault_uri }"
 }
 JSON
   depends_on = [
