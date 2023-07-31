@@ -45,22 +45,6 @@ resource "time_sleep" "role_assignment_sleep" {
   }
 }
 
-resource "azurerm_data_factory" "data_factory" {
-  name                = substr("df-${local.resource_prefix}", 0, 63)
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  github_configuration {
-    account_name = "stanislav-zhurich"
-    branch_name = "main"
-    repository_name = "azure-big-data-reference-architecture"
-    root_folder = "/datafactory"
-    git_url = "https://github.com"
-  }
-  identity {
-    type = "SystemAssigned"
-  }
-}
-
 resource "azurerm_role_assignment" "user_datalake_role_assignement" {  
   for_each = toset(["Contributor", "Storage Blob Data Owner"])
   role_definition_name               = each.value
@@ -69,21 +53,21 @@ resource "azurerm_role_assignment" "user_datalake_role_assignement" {
   principal_id         = data.azuread_client_config.current.object_id  
 }  
 
-resource "azurerm_role_assignment" "df_datalake_role_assignement" {  
+resource "azurerm_role_assignment" "synapse_datalake_role_assignement" {  
   for_each = toset(["Contributor", "Storage Blob Data Owner"])
   role_definition_name               = each.value
 
   scope                = azurerm_storage_account.datalake_storage_account.id  
-  principal_id         = azurerm_data_factory.data_factory.identity[0].principal_id  
+  principal_id         = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id  
 }  
   
 
-resource "azurerm_role_assignment" "df_source_role_assignement" {  
+resource "azurerm_role_assignment" "synapse_source_role_assignement" {  
   for_each = toset(["Contributor", "Storage Blob Data Owner"])
   role_definition_name               = each.value
 
   scope                = azurerm_storage_account.source_storage_account.id    
-  principal_id         = azurerm_data_factory.data_factory.identity[0].principal_id  
+  principal_id         = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id  
 }  
   
 
@@ -102,7 +86,7 @@ resource "azurerm_storage_data_lake_gen2_path" "datalake_path" {
 
   owner = data.azuread_client_config.current.object_id
   ace {
-    id       = azurerm_data_factory.data_factory.identity[0].principal_id
+    id       = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id
     type     = "user"
     permissions = "rwx"
   }
@@ -113,36 +97,102 @@ resource "azurerm_storage_data_lake_gen2_path" "datalake_path" {
   }
 }
 
+resource "azurerm_synapse_workspace" "synapse_workspace" {
+  name                                 = substr("${local.resource_prefix}workspace", 0, 49)
+  resource_group_name                  = azurerm_resource_group.resource_group.name
+  location                             = azurerm_resource_group.resource_group.location
+  storage_data_lake_gen2_filesystem_id = azurerm_storage_data_lake_gen2_filesystem.adls.id
+  sql_administrator_login              = "sqladminuser"
+  sql_administrator_login_password     = "H@Sh1CoR3!"
+  public_network_access_enabled = true
 
-resource "azurerm_role_assignment" "df_owner_role_assignement" {
-  scope                = azurerm_data_factory.data_factory.id
+  github_repo {
+    account_name = "stanislav-zhurich"
+    branch_name = "main"
+    repository_name = "azure-big-data-reference-architecture"
+    root_folder = "/configuration"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = {
+    Env = "production"
+  }
+}
+
+resource "azurerm_role_assignment" "synapse_workspace_owner_role_assignement" {
+  scope                = azurerm_synapse_workspace.synapse_workspace.id
   role_definition_name = "Owner"
   principal_id         = data.azuread_client_config.current.object_id
 }
 
 
-resource "azurerm_data_factory_linked_service_azure_blob_storage" "patient_data_source_linked_service" {
-  name            = "blobStorageLinkedService"
-  data_factory_id = azurerm_data_factory.data_factory.id
-  sas_uri = "https://${azurerm_storage_account.source_storage_account.name}.blob.core.windows.net"
-  key_vault_sas_token {
-    linked_service_name = azurerm_data_factory_linked_service_key_vault.key_vault_linked_service.name
-    secret_name         = "${azurerm_key_vault_secret.blob_connection_string_secret.name}"
-  }
+resource "azurerm_synapse_firewall_rule" "allow_all_rule" {
+  name                 = "AllowAll"
+  synapse_workspace_id = azurerm_synapse_workspace.synapse_workspace.id
+  start_ip_address     = "0.0.0.0"
+  end_ip_address       = "255.255.255.255"
 }
 
+resource "azurerm_synapse_linked_service" "patient_data_source_linked_service" {
+  name                 = "blobStorageLinkedService"
+  synapse_workspace_id = azurerm_synapse_workspace.synapse_workspace.id
+  type                 = "AzureBlobStorage"
 
-resource "azurerm_data_factory_linked_service_data_lake_storage_gen2" "datalake_linked_service" {
-  name                  = "datalakeLinkedService"
-  data_factory_id       = azurerm_data_factory.data_factory.id
-  url                   = "https://${azurerm_storage_account.datalake_storage_account.name}.dfs.core.windows.net/"
-  use_managed_identity = true
+  type_properties_json = <<JSON
+{
+   "connectionString": {
+                "type": "AzureKeyVaultSecret",
+                "store": {
+                    "referenceName": "${azurerm_synapse_linked_service.key_vault_linked_service.name}",
+                    "type": "LinkedServiceReference"
+                },
+                "secretName": "${azurerm_key_vault_secret.blob_connection_string_secret.name}"
+            }
+}
+JSON
+  depends_on = [
+    azurerm_synapse_firewall_rule.allow_all_rule
+  ]
 }
 
-resource "azurerm_data_factory_linked_service_key_vault" "key_vault_linked_service" {
-  name            = "keyVaultLinkedService"
-  data_factory_id = azurerm_data_factory.data_factory.id
-  key_vault_id    = azurerm_key_vault.key_vault.id
+resource "azurerm_synapse_linked_service" "datalake_linked_service" {
+  name                 = "datalakeLinkedService"
+  synapse_workspace_id = azurerm_synapse_workspace.synapse_workspace.id
+  type                 = "AzureBlobFS"
+
+  type_properties_json = <<JSON
+{
+   "url": "https://${azurerm_storage_account.datalake_storage_account.name}.dfs.core.windows.net/",
+			"accountKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "${azurerm_synapse_linked_service.key_vault_linked_service.name}",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "${azurerm_key_vault_secret.datalake-access-key-secret.name}"
+			}
+}
+JSON
+  depends_on = [
+    azurerm_synapse_firewall_rule.allow_all_rule
+  ]
+}
+
+resource "azurerm_synapse_linked_service" "key_vault_linked_service" {
+  name                 = "keyVaultLinkedService"
+  synapse_workspace_id = azurerm_synapse_workspace.synapse_workspace.id
+  type                 = "AzureKeyVault"
+  type_properties_json = <<JSON
+{
+  "baseUrl": "${azurerm_key_vault.key_vault.vault_uri }"
+}
+JSON
+  depends_on = [
+    azurerm_synapse_firewall_rule.allow_all_rule
+  ]
 }
 
 
@@ -164,10 +214,11 @@ resource "azurerm_key_vault_access_policy" "deployer_keyvault_policy" {
      "Get", "List", "Set", "Delete", "Recover"
    ]
 }
-resource "azurerm_key_vault_access_policy" "df_keyvault_policy" {
+
+resource "azurerm_key_vault_access_policy" "synapse_keyvault_policy" {
    key_vault_id = azurerm_key_vault.key_vault.id
-   tenant_id    = azurerm_data_factory.data_factory.identity[0].tenant_id
-   object_id    = azurerm_data_factory.data_factory.identity[0].principal_id
+   tenant_id    = azurerm_synapse_workspace.synapse_workspace.identity[0].tenant_id
+   object_id    = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id
 
    secret_permissions = [
      "Get", "List", "Set", "Delete", "Recover"
