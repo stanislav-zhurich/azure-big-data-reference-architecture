@@ -1,0 +1,9 @@
+{
+	"name": "df-project-881efb1c-9e27-4b58-823a-230f51d9a8f4",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a6c77f57-0da3-4841-ba48-9f94154e326b",
+		"tenantId": "728ec391-9e63-400e-883f-f7fd4a75ac01"
+	}
+}
