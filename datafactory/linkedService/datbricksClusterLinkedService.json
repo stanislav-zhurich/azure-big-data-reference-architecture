@@ -1,0 +1,15 @@
+{
+	"name": "datbricksClusterLinkedService",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"accessToken": null,
+			"authentication": "MSI",
+			"domain": "https://adb-3112181455869675.15.azuredatabricks.net",
+			"existingClusterId": "0731-193619-zembg364",
+			"workspaceResourceId": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/project-881efb1c-9e27-4b58-823a-230f51d9a8f4_rg/providers/Microsoft.Databricks/workspaces/databricks-project-881efb1c-9e27-4b58-823a-230f51d9a8f4"
+		},
+		"annotations": []
+	}
+}
