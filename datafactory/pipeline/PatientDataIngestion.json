@@ -53,6 +53,186 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CopyFromSourceToBronze",
+						"dependencyConditions": [
+							"Skipped"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['resourceType']"
+								},
+								"sink": {
+									"name": "resourceType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['identifier'][0]['type']['coding'][0]['code']"
+								},
+								"sink": {
+									"name": "code",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['identifier'][0]['value']"
+								},
+								"sink": {
+									"name": "identifier",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['identifier'][0]['period']['start']"
+								},
+								"sink": {
+									"name": "start_date",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['identifier'][0]['assigner']['display']"
+								},
+								"sink": {
+									"name": "insurance_company",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['active']"
+								},
+								"sink": {
+									"name": "active",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name'][0]['family']"
+								},
+								"sink": {
+									"name": "family_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name'][0]['given'][0]"
+								},
+								"sink": {
+									"name": "given_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['telecom'][0]['use']"
+								},
+								"sink": {
+									"name": "contact_type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['gender']"
+								},
+								"sink": {
+									"name": "gender",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['birthDate']"
+								},
+								"sink": {
+									"name": "birthDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['deceasedBoolean']"
+								},
+								"sink": {
+									"name": "deceasedBoolean",
+									"type": "Boolean"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "PatientDataBronzeDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "@concat(formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "PatientDataSilverDataSet",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": [],
