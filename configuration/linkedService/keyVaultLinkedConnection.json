@@ -1,0 +1,10 @@
+{
+	"name": "keyVaultLinkedConnection",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://bigdata-project-kv.vault.azure.net/"
+		}
+	}
+}
