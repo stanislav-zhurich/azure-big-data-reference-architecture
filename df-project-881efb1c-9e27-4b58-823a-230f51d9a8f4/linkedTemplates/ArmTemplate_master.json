@@ -7,13 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "df-project-881efb1c-9e27-4b58-823a-230f51d9a8f4"
 		},
+		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "blob-storage-access-key"
+		},
+		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://srcproject881efb1c9e274b.blob.core.windows.net"
+		},
 		"blobStorageLinkedService_sasUri": {
 			"type": "secureString",
 			"metadata": "Secure string for 'sasUri' of 'blobStorageLinkedService'"
-		},
-		"blobStorageLinkedService_properties_typeProperties_sasToken_secretName": {
-			"type": "string",
-			"defaultValue": "blob-storage-access-key"
 		},
 		"datalakeLinkedService_properties_typeProperties_url": {
 			"type": "string",
@@ -50,17 +54,20 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"keyVaultLinkedService_properties_typeProperties_baseUrl": {
-						"value": "[parameters('keyVaultLinkedService_properties_typeProperties_baseUrl')]"
+					"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint')]"
 					},
 					"blobStorageLinkedService_sasUri": {
 						"value": "[parameters('blobStorageLinkedService_sasUri')]"
 					},
-					"blobStorageLinkedService_properties_typeProperties_sasToken_secretName": {
-						"value": "[parameters('blobStorageLinkedService_properties_typeProperties_sasToken_secretName')]"
-					},
 					"datalakeLinkedService_properties_typeProperties_url": {
 						"value": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
+					},
+					"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+						"value": "[parameters('keyVaultLinkedService_properties_typeProperties_baseUrl')]"
+					},
+					"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('AzureBlobStorage1_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},

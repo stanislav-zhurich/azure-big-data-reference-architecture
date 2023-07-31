@@ -5,11 +5,14 @@
 		"factoryName": {
 			"value": "df-project-881efb1c-9e27-4b58-823a-230f51d9a8f4"
 		},
+		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
+			"value": "blob-storage-access-key"
+		},
+		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+			"value": "https://srcproject881efb1c9e274b.blob.core.windows.net"
+		},
 		"blobStorageLinkedService_sasUri": {
 			"value": ""
-		},
-		"blobStorageLinkedService_properties_typeProperties_sasToken_secretName": {
-			"value": "blob-storage-access-key"
 		},
 		"datalakeLinkedService_properties_typeProperties_url": {
 			"value": "https://dlproject881efb1c9e274b5.dfs.core.windows.net/"

@@ -7,13 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "df-project-881efb1c-9e27-4b58-823a-230f51d9a8f4"
 		},
+		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "blob-storage-access-key"
+		},
+		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://srcproject881efb1c9e274b.blob.core.windows.net"
+		},
 		"blobStorageLinkedService_sasUri": {
 			"type": "secureString",
 			"metadata": "Secure string for 'sasUri' of 'blobStorageLinkedService'"
-		},
-		"blobStorageLinkedService_properties_typeProperties_sasToken_secretName": {
-			"type": "string",
-			"defaultValue": "blob-storage-access-key"
 		},
 		"datalakeLinkedService_properties_typeProperties_url": {
 			"type": "string",
@@ -92,7 +96,8 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2023-07-31T12:15:10Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataSet')]",
@@ -449,7 +454,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "blobStorageLinkedService",
+					"referenceName": "blobSourceBlobStorageLinkedService",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -775,25 +780,24 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blobStorageLinkedService')]"
+				"[concat(variables('factoryId'), '/linkedServices/blobSourceBlobStorageLinkedService')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/blobStorageLinkedService')]",
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"sasUri": "[parameters('blobStorageLinkedService_sasUri')]",
-					"sasToken": {
+					"connectionString": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
 							"referenceName": "keyVaultLinkedService",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "[parameters('blobStorageLinkedService_properties_typeProperties_sasToken_secretName')]"
+						"secretName": "[parameters('AzureBlobStorage1_properties_typeProperties_connectionString_secretName')]"
 					}
 				},
 				"connectVia": {
@@ -807,6 +811,32 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/blobSourceBlobStorageLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"serviceEndpoint": "[parameters('blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blobStorageLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"sasUri": "[parameters('blobStorageLinkedService_sasUri')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/datalakeLinkedService')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -815,15 +845,9 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/keyVaultLinkedService')]",
