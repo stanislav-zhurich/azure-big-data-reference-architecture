@@ -50,9 +50,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"datalakeLinkedService_properties_typeProperties_url": {
-						"value": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
-					},
 					"keyVaultLinkedService_properties_typeProperties_baseUrl": {
 						"value": "[parameters('keyVaultLinkedService_properties_typeProperties_baseUrl')]"
 					},
@@ -61,6 +58,9 @@
 					},
 					"blobStorageLinkedService_properties_typeProperties_sasToken_secretName": {
 						"value": "[parameters('blobStorageLinkedService_properties_typeProperties_sasToken_secretName')]"
+					},
+					"datalakeLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
 					}
 				}
 			},

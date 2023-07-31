@@ -795,9 +795,14 @@
 						},
 						"secretName": "[parameters('blobStorageLinkedService_properties_typeProperties_sasToken_secretName')]"
 					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime')]",
 				"[concat(variables('factoryId'), '/linkedServices/keyVaultLinkedService')]"
 			]
 		},
@@ -810,9 +815,15 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/keyVaultLinkedService')]",
@@ -840,6 +851,27 @@
 							"computeType": "General",
 							"coreCount": 8,
 							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "West Europe",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false,
+							"customProperties": []
 						}
 					}
 				}
