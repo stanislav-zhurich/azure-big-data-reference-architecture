@@ -61,7 +61,7 @@
 					{
 						"activity": "CopyFromSourceToBronze",
 						"dependencyConditions": [
-							"Skipped"
+							"Succeeded"
 						]
 					}
 				],
