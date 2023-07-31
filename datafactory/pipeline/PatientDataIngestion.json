@@ -78,8 +78,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"wildcardFileName": "*.json",
+							"fileListPath": "datalake/bronze",
 							"enablePartitionDiscovery": true,
 							"partitionRootPath": "datalake/bronze"
 						},
