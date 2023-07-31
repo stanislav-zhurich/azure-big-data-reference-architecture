@@ -81,8 +81,7 @@
 							"recursive": true,
 							"wildcardFolderPath": "bronze",
 							"wildcardFileName": "*.json",
-							"enablePartitionDiscovery": true,
-							"partitionRootPath": "datalake/bronze"
+							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
