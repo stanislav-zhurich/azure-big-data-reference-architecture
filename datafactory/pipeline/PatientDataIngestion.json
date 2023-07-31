@@ -80,7 +80,8 @@
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
 							"wildcardFileName": "*.json",
-							"enablePartitionDiscovery": false
+							"enablePartitionDiscovery": true,
+							"partitionRootPath": "datalake/bronze"
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
@@ -89,7 +90,8 @@
 					"sink": {
 						"type": "ParquetSink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
 							"type": "ParquetWriteSettings"
