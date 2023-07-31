@@ -47,7 +47,10 @@
 				"outputs": [
 					{
 						"referenceName": "PatientDataBronzeDataSet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "@concat('bronze', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+						}
 					}
 				]
 			}
