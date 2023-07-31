@@ -4,26 +4,11 @@
 	"properties": {
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"sasUri": "https://srcproject881efb1c9e274b.blob.core.windows.net",
-			"sasToken": {
-				"secretName": "blob-storage-access-key",
-				"store": {
-					"referenceName": "keyVaultLinkedService",
-					"type": "LinkedServiceReference"
-				},
-				"type": "AzureKeyVaultSecret"
-			},
-			"servicePrincipalId": "",
-			"servicePrincipalKey": {
+			"sasUri": {
 				"type": "SecureString",
 				"value": "**********"
-			},
-			"tenant": ""
+			}
 		},
-		"annotations": [],
-		"connectVia": {
-			"referenceName": "integrationRuntime",
-			"type": "IntegrationRuntimeReference"
-		}
+		"annotations": []
 	}
 }
