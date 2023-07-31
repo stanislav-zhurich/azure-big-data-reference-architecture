@@ -7,17 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "df-project-881efb1c-9e27-4b58-823a-230f51d9a8f4"
 		},
-		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "blob-storage-access-key"
-		},
 		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://srcproject881efb1c9e274b.blob.core.windows.net"
-		},
-		"blobStorageLinkedService_sasUri": {
-			"type": "secureString",
-			"metadata": "Secure string for 'sasUri' of 'blobStorageLinkedService'"
 		},
 		"datalakeLinkedService_properties_typeProperties_url": {
 			"type": "string",
@@ -90,6 +82,190 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "CopyFromBronzeToSilver",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "CopyFromSourceToBronze",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*.json",
+									"enablePartitionDiscovery": true,
+									"partitionRootPath": "datalake/bronze"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['resourceType']"
+										},
+										"sink": {
+											"name": "resourceType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['identifier'][0]['type']['coding'][0]['code']"
+										},
+										"sink": {
+											"name": "code",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['identifier'][0]['value']"
+										},
+										"sink": {
+											"name": "identifier",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['identifier'][0]['period']['start']"
+										},
+										"sink": {
+											"name": "start_date",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['identifier'][0]['assigner']['display']"
+										},
+										"sink": {
+											"name": "insurance_company",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['active']"
+										},
+										"sink": {
+											"name": "active",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name'][0]['family']"
+										},
+										"sink": {
+											"name": "family_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name'][0]['given'][0]"
+										},
+										"sink": {
+											"name": "given_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['telecom'][0]['use']"
+										},
+										"sink": {
+											"name": "contact_type",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['gender']"
+										},
+										"sink": {
+											"name": "gender",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['birthDate']"
+										},
+										"sink": {
+											"name": "birthDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['deceasedBoolean']"
+										},
+										"sink": {
+											"name": "deceasedBoolean",
+											"type": "Boolean"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "PatientDataBronzeDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "@concat(formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "PatientDataSilverDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -101,7 +277,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/PatientDataBronzeDataSet')]"
+				"[concat(variables('factoryId'), '/datasets/PatientDataBronzeDataSet')]",
+				"[concat(variables('factoryId'), '/datasets/PatientDataSilverDataSet')]"
 			]
 		},
 		{
@@ -449,6 +626,31 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PatientDataSilverDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "datalakeLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "bronze",
+						"fileSystem": "datalake"
+					},
+					"compressionCodec": "none"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/datalakeLinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceDataSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -784,33 +986,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "keyVaultLinkedService",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('AzureBlobStorage1_properties_typeProperties_connectionString_secretName')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "integrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime')]",
-				"[concat(variables('factoryId'), '/linkedServices/keyVaultLinkedService')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/blobSourceBlobStorageLinkedService')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -824,19 +999,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/blobStorageLinkedService')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"sasUri": "[parameters('blobStorageLinkedService_sasUri')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/datalakeLinkedService')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -845,9 +1007,15 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/keyVaultLinkedService')]",
