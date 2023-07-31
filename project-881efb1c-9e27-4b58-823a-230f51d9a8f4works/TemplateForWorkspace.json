@@ -86,7 +86,9 @@
 							{
 								"referenceName": "PatientDataBronzeDataSet",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"folder": "@concat('bronze', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+								}
 							}
 						]
 					}
@@ -122,7 +124,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "bronze/@dataset().folder",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
 						"fileSystem": "datalake"
 					}
 				},
