@@ -20,6 +20,10 @@
 			},
 			"tenant": ""
 		},
-		"annotations": []
+		"annotations": [],
+		"connectVia": {
+			"referenceName": "integrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
 	}
 }
