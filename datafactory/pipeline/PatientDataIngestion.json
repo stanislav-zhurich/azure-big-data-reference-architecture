@@ -55,7 +55,7 @@
 				]
 			},
 			{
-				"name": "Copy data1",
+				"name": "CopyFromBronzeToSilver",
 				"type": "Copy",
 				"dependsOn": [
 					{
