@@ -1,0 +1,18 @@
+{
+	"name": "blobStorageLinkedService",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": {
+				"secretName": "blob-storage-access-key",
+				"store": {
+					"referenceName": "keyVaultLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"type": "AzureKeyVaultSecret"
+			}
+		},
+		"annotations": []
+	}
+}
