@@ -1,0 +1,19 @@
+{
+	"name": "datalakeLinkedService",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://dlproject881efb1c9e274b5.dfs.core.windows.net/",
+			"accountKey": {
+				"secretName": "datalake-access-key",
+				"store": {
+					"referenceName": "keyVaultLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"type": "AzureKeyVaultSecret"
+			}
+		},
+		"annotations": []
+	}
+}
