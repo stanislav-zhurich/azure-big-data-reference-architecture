@@ -1,0 +1,849 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "df-project-881efb1c-9e27-4b58-823a-230f51d9a8f4"
+		},
+		"blobStorageLinkedService_sasUri": {
+			"type": "secureString",
+			"metadata": "Secure string for 'sasUri' of 'blobStorageLinkedService'"
+		},
+		"blobStorageLinkedService_properties_typeProperties_sasToken_secretName": {
+			"type": "string",
+			"defaultValue": "blob-storage-access-key"
+		},
+		"datalakeLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dlproject881efb1c9e274b5.dfs.core.windows.net/"
+		},
+		"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://bigdata-project-kv.vault.azure.net/"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/PatientDataIngestion')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyFromSourceToBronze",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*.json",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "SourceDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "PatientDataBronzeDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "@concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceDataSet')]",
+				"[concat(variables('factoryId'), '/datasets/PatientDataBronzeDataSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PatientDataBronzeDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "datalakeLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string",
+						"defaultValue": "@concat(formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"fileSystem": "datalake"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"resourceType": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"text": {
+							"type": "object",
+							"properties": {
+								"status": {
+									"type": "string"
+								},
+								"div": {
+									"type": "string"
+								}
+							}
+						},
+						"identifier": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"use": {
+										"type": "string"
+									},
+									"type": {
+										"type": "object",
+										"properties": {
+											"coding": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"system": {
+															"type": "string"
+														},
+														"code": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									},
+									"system": {
+										"type": "string"
+									},
+									"value": {
+										"type": "string"
+									},
+									"period": {
+										"type": "object",
+										"properties": {
+											"start": {
+												"type": "string"
+											}
+										}
+									},
+									"assigner": {
+										"type": "object",
+										"properties": {
+											"display": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"active": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"use": {
+										"type": "string"
+									},
+									"family": {
+										"type": "string"
+									},
+									"given": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						},
+						"telecom": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"use": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"gender": {
+							"type": "string"
+						},
+						"birthDate": {
+							"type": "string"
+						},
+						"_birthDate": {
+							"type": "object",
+							"properties": {
+								"extension": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"url": {
+												"type": "string"
+											},
+											"valueDateTime": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"deceasedBoolean": {
+							"type": "boolean"
+						},
+						"address": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"use": {
+										"type": "string"
+									},
+									"type": {
+										"type": "string"
+									},
+									"text": {
+										"type": "string"
+									},
+									"line": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									},
+									"city": {
+										"type": "string"
+									},
+									"district": {
+										"type": "string"
+									},
+									"state": {
+										"type": "string"
+									},
+									"postalCode": {
+										"type": "string"
+									},
+									"period": {
+										"type": "object",
+										"properties": {
+											"start": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"contact": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"relationship": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"coding": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"system": {
+																"type": "string"
+															},
+															"code": {
+																"type": "string"
+															}
+														}
+													}
+												}
+											}
+										}
+									},
+									"name": {
+										"type": "object",
+										"properties": {
+											"family": {
+												"type": "string"
+											},
+											"_family": {
+												"type": "object",
+												"properties": {
+													"extension": {
+														"type": "array",
+														"items": {
+															"type": "object",
+															"properties": {
+																"url": {
+																	"type": "string"
+																},
+																"valueString": {
+																	"type": "string"
+																}
+															}
+														}
+													}
+												}
+											},
+											"given": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											}
+										}
+									},
+									"telecom": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"system": {
+													"type": "string"
+												},
+												"value": {
+													"type": "string"
+												}
+											}
+										}
+									},
+									"address": {
+										"type": "object",
+										"properties": {
+											"use": {
+												"type": "string"
+											},
+											"type": {
+												"type": "string"
+											},
+											"line": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											},
+											"city": {
+												"type": "string"
+											},
+											"district": {
+												"type": "string"
+											},
+											"state": {
+												"type": "string"
+											},
+											"postalCode": {
+												"type": "string"
+											},
+											"period": {
+												"type": "object",
+												"properties": {
+													"start": {
+														"type": "string"
+													}
+												}
+											}
+										}
+									},
+									"gender": {
+										"type": "string"
+									},
+									"period": {
+										"type": "object",
+										"properties": {
+											"start": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"managingOrganization": {
+							"type": "object",
+							"properties": {
+								"reference": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/datalakeLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "patient-data-source"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"resourceType": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"text": {
+							"type": "object",
+							"properties": {
+								"status": {
+									"type": "string"
+								},
+								"div": {
+									"type": "string"
+								}
+							}
+						},
+						"identifier": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"use": {
+										"type": "string"
+									},
+									"type": {
+										"type": "object",
+										"properties": {
+											"coding": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"system": {
+															"type": "string"
+														},
+														"code": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									},
+									"system": {
+										"type": "string"
+									},
+									"value": {
+										"type": "string"
+									},
+									"period": {
+										"type": "object",
+										"properties": {
+											"start": {
+												"type": "string"
+											}
+										}
+									},
+									"assigner": {
+										"type": "object",
+										"properties": {
+											"display": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"active": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"use": {
+										"type": "string"
+									},
+									"family": {
+										"type": "string"
+									},
+									"given": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						},
+						"telecom": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"use": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"gender": {
+							"type": "string"
+						},
+						"birthDate": {
+							"type": "string"
+						},
+						"_birthDate": {
+							"type": "object",
+							"properties": {
+								"extension": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"url": {
+												"type": "string"
+											},
+											"valueDateTime": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"deceasedBoolean": {
+							"type": "boolean"
+						},
+						"address": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"use": {
+										"type": "string"
+									},
+									"type": {
+										"type": "string"
+									},
+									"text": {
+										"type": "string"
+									},
+									"line": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									},
+									"city": {
+										"type": "string"
+									},
+									"district": {
+										"type": "string"
+									},
+									"state": {
+										"type": "string"
+									},
+									"postalCode": {
+										"type": "string"
+									},
+									"period": {
+										"type": "object",
+										"properties": {
+											"start": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"contact": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"relationship": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"coding": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"system": {
+																"type": "string"
+															},
+															"code": {
+																"type": "string"
+															}
+														}
+													}
+												}
+											}
+										}
+									},
+									"name": {
+										"type": "object",
+										"properties": {
+											"family": {
+												"type": "string"
+											},
+											"_family": {
+												"type": "object",
+												"properties": {
+													"extension": {
+														"type": "array",
+														"items": {
+															"type": "object",
+															"properties": {
+																"url": {
+																	"type": "string"
+																},
+																"valueString": {
+																	"type": "string"
+																}
+															}
+														}
+													}
+												}
+											},
+											"given": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											}
+										}
+									},
+									"telecom": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"system": {
+													"type": "string"
+												},
+												"value": {
+													"type": "string"
+												}
+											}
+										}
+									},
+									"address": {
+										"type": "object",
+										"properties": {
+											"use": {
+												"type": "string"
+											},
+											"type": {
+												"type": "string"
+											},
+											"line": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											},
+											"city": {
+												"type": "string"
+											},
+											"district": {
+												"type": "string"
+											},
+											"state": {
+												"type": "string"
+											},
+											"postalCode": {
+												"type": "string"
+											},
+											"period": {
+												"type": "object",
+												"properties": {
+													"start": {
+														"type": "string"
+													}
+												}
+											}
+										}
+									},
+									"gender": {
+										"type": "string"
+									},
+									"period": {
+										"type": "object",
+										"properties": {
+											"start": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						},
+						"managingOrganization": {
+							"type": "object",
+							"properties": {
+								"reference": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blobStorageLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blobStorageLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"sasUri": "[parameters('blobStorageLinkedService_sasUri')]",
+					"sasToken": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "keyVaultLinkedService",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('blobStorageLinkedService_properties_typeProperties_sasToken_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/keyVaultLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/datalakeLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/keyVaultLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('keyVaultLinkedService_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
