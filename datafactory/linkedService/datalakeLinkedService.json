@@ -6,10 +6,6 @@
 		"typeProperties": {
 			"url": "https://dlproject881efb1c9e274b5.dfs.core.windows.net/"
 		},
-		"annotations": [],
-		"connectVia": {
-			"referenceName": "integrationRuntime",
-			"type": "IntegrationRuntimeReference"
-		}
+		"annotations": []
 	}
 }

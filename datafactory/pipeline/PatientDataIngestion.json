@@ -53,8 +53,37 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Notebook1",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "CopyFromSourceToBronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver.py"
+				},
+				"linkedServiceName": {
+					"referenceName": "datbricksClusterLinkedService",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2023-07-31T12:15:10Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
