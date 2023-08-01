@@ -120,15 +120,11 @@ resource "azurerm_role_assignment" "df_owner_role_assignement" {
   principal_id         = data.azuread_client_config.current.object_id
 }
 
-
-resource "azurerm_data_factory_linked_service_azure_blob_storage" "patient_data_source_linked_service" {
-  name            = "blobStorageLinkedService"
+resource "azurerm_data_factory_linked_service_azure_blob_storage" "patient_blob_data_source_linked_service" {
+  name            = "blobSourceBlobStorageLinkedService"
   data_factory_id = azurerm_data_factory.data_factory.id
-  sas_uri = "https://${azurerm_storage_account.source_storage_account.name}.blob.core.windows.net"
-  key_vault_sas_token {
-    linked_service_name = azurerm_data_factory_linked_service_key_vault.key_vault_linked_service.name
-    secret_name         = "${azurerm_key_vault_secret.blob_connection_string_secret.name}"
-  }
+  use_managed_identity = true
+  service_endpoint = "https://${azurerm_storage_account.source_storage_account.name}.blob.core.windows.net"
 }
 
 
@@ -195,3 +191,88 @@ resource "azurerm_key_vault_secret" "datalake-access-key-secret" {
    key_vault_id = azurerm_key_vault.key_vault.id
 }
 
+
+resource "azurerm_databricks_workspace" "databricks_workspace" {
+  name                = substr("databricks-${local.resource_prefix}", 0, 63)
+  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = azurerm_resource_group.resource_group.location
+  sku                 = "trial"
+
+  tags = {
+    Environment = "Production"
+  }
+}
+
+provider "databricks" {
+  host = azurerm_databricks_workspace.databricks_workspace.workspace_url
+}
+
+/* data "databricks_node_type" "smallest" {
+  local_disk = true
+}
+
+# Use the latest Databricks Runtime
+# Long Term Support (LTS) version.
+data "databricks_spark_version" "latest_lts" {
+  long_term_support = true
+  depends_on = [ azurerm_databricks_workspace.databricks_workspace ]
+} */
+
+resource "databricks_cluster" "databricks_cluster" {
+  cluster_name            = substr("cluster-${local.resource_prefix}", 0, 63)
+  node_type_id            = "Standard_F4"
+  spark_version           = "12.2.x-scala2.12"
+  autotermination_minutes = 15
+  num_workers             = 1
+  data_security_mode = "SINGLE_USER"
+  /* lifecycle {
+
+    create_before_destroy = true
+  } */
+}
+
+resource "azurerm_data_factory_linked_service_azure_databricks" "databricks_cluster_linked_servie" {
+  name                = "datbricksClusterLinkedService"
+  data_factory_id     = azurerm_data_factory.data_factory.id
+  existing_cluster_id = databricks_cluster.databricks_cluster.cluster_id
+  msi_work_space_resource_id = azurerm_databricks_workspace.databricks_workspace.id
+  adb_domain   = "https://${azurerm_databricks_workspace.databricks_workspace.workspace_url}"
+}
+
+resource "azurerm_role_assignment" "df_databricks_role_assignement" {  
+  for_each = toset(["Contributor", "Storage Blob Data Owner"])
+  role_definition_name               = each.value
+
+  scope                = azurerm_databricks_workspace.databricks_workspace.id   
+  principal_id         = azurerm_data_factory.data_factory.identity[0].principal_id  
+}  
+
+data "databricks_current_user" "current" {}
+
+resource "databricks_notebook" "notebook" {
+  path     = "${data.databricks_current_user.current.home}/pipeline/copyFromBronzeToSilver.py"
+  language = "PYTHON"
+  source   = "../copyFromBronzeToSilver.py"
+}
+
+resource "databricks_secret_scope" "terraform" {
+    name                     = "application"
+    initial_manage_principal = "users"
+}
+
+resource "databricks_secret" "service_principal_key" {
+    key          = "service_principal_key"
+    string_value = "${var.ARM_CLIENT_SECRET}"
+    scope        = databricks_secret_scope.terraform.name
+}
+
+resource "databricks_azure_adls_gen2_mount" "datalake_mount" {
+    container_name         = "datalake"
+    storage_account_name   = azurerm_storage_account.datalake_storage_account.name
+    mount_name             = "datalake"
+    tenant_id              = data.azuread_client_config.current.tenant_id
+    client_id              = data.azuread_client_config.current.client_id
+    client_secret_scope    = databricks_secret_scope.terraform.name
+    client_secret_key      = databricks_secret.service_principal_key.key
+    initialize_file_system = true
+}
