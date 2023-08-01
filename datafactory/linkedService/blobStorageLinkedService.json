@@ -1,26 +1,18 @@
 {
-	"name": "blobStorageLinkedService",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"name": "AzureBlobStorage1",
 	"properties": {
+		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"sasUri": "https://srcproject881efb1c9e274b.blob.core.windows.net",
-			"sasToken": {
-				"secretName": "blob-storage-access-key",
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
 				"store": {
 					"referenceName": "keyVaultLinkedService",
 					"type": "LinkedServiceReference"
 				},
-				"type": "AzureKeyVaultSecret"
-			},
-			"servicePrincipalId": "",
-			"servicePrincipalKey": {
-				"type": "SecureString",
-				"value": "**********"
-			},
-			"tenant": ""
+				"secretName": "blob-storage-access-key"
+			}
 		},
-		"annotations": [],
 		"connectVia": {
 			"referenceName": "integrationRuntime",
 			"type": "IntegrationRuntimeReference"
