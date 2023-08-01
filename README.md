@@ -70,3 +70,5 @@ Oveall costs are expected to be around **$15**. They can be cut applying Free Tr
 ### Azure Databricks
 - [Azure Databricks](https://learn.microsoft.com/en-us/azure/databricks/)
 - [Azure Databricks Essentials](https://www.linkedin.com/learning/azure-spark-databricks-essential-training/optimize-data-pipelines?dApp=53239054&leis=LAA&u=2113185)
+### Other Programs
+- [Azure Data Integration Mentoring Program](https://learn.epam.com/detailsPage?id=9ada9581-85ef-41a4-be42-340452be3e93)
