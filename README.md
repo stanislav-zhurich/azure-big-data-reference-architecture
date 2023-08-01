@@ -4,7 +4,7 @@
 The project is a foundation of data pipelines platform and aims to provide practical experience for those who are keen on data engineering and especially those based on Azure managed services.
 ### Use Case
 The case is taken from real project related to healthcare industry and represents nessesaty to ingest patient data into platform along with their health observations (blood pressure, blood glucose, etc.). Platform should be capable of storing, aggregating and providing holistic view on patient health conditions. Apart from that, it should react fast on any anomalies detected in patient's observations.
-![Context View](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/c43101f25d78ad5529473d51bafed27528e564c6/images/context-view-v2.drawio.svg)
+![Context View](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/context-view-v2.png)
 
 The following case assume data ingestion in following ways:
  - Initial patient data via files that periodically arrives from external sources.
