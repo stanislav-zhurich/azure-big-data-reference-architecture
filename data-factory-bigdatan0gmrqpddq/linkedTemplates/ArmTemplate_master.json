@@ -1,0 +1,70 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "data-factory-bigdatan0gmrqpddq"
+		},
+		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://sourcebigdatan0gmrqpddq.blob.core.windows.net"
+		},
+		"datalakeLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://datalakebigdatan0gmrqpdd.dfs.core.windows.net/"
+		},
+		"datbricksClusterLinkedService_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0802-133509-doe9yv4u"
+		},
+		"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://bigdatan0gmrqpddq-kv.vault.azure.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "data-factory-bigdatan0gmrqpddq_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint')]"
+					},
+					"datalakeLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
+					},
+					"datbricksClusterLinkedService_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('datbricksClusterLinkedService_properties_typeProperties_existingClusterId')]"
+					},
+					"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+						"value": "[parameters('keyVaultLinkedService_properties_typeProperties_baseUrl')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
