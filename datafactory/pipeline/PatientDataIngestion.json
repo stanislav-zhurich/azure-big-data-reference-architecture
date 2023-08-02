@@ -55,7 +55,7 @@
 				]
 			},
 			{
-				"name": "Notebook1",
+				"name": "CopyFromBronzeToSilver",
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
