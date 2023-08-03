@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "data-factory-bigdataywgug1c0mb"
+		},
+		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+			"value": "https://sourcebigdataywgug1c0mb.blob.core.windows.net"
+		},
+		"databricksClusterLinkedService_properties_typeProperties_existingClusterId": {
+			"value": "0803-202119-aot1c29g"
+		},
+		"datalakeLinkedService_properties_typeProperties_url": {
+			"value": "https://datalakebigdataywgug1c0m.dfs.core.windows.net/"
+		},
+		"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+			"value": "https://bigdataywgug1c0mb-kv.vault.azure.net/"
+		}
+	}
+}
