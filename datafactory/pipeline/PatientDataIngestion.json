@@ -73,44 +73,8 @@
 					"referenceName": "databricksClusterLinkedService",
 					"type": "LinkedServiceReference"
 				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "CopyFromSourceToBronze",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "pipelineReturnValue",
-					"value": [
-						{
-							"key": "file_path",
-							"value": {
-								"type": "String",
-								"content": "@pipeline().parameters.filepath"
-							}
-						}
-					],
-					"setSystemVariable": true
-				}
 			}
 		],
-		"parameters": {
-			"file_path": {
-				"type": "string",
-				"defaultValue": "@pipeline().parameters.filepath"
-			}
-		},
 		"annotations": [],
 		"lastPublishTime": "2023-07-31T12:15:10Z"
 	},
