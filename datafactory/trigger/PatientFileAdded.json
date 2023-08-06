@@ -1,0 +1,24 @@
+{
+	"name": "PatientFileAdded",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PatientDataIngestion",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/patient-data-source/blobs/",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataywgug1c0mb_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataywgug1c0mb",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
