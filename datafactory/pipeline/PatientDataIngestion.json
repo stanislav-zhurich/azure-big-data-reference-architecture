@@ -82,6 +82,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"file_path": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.filepath"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-07-31T12:15:10Z"
 	},
