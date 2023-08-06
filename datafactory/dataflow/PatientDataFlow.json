@@ -1,0 +1,72 @@
+{
+	"name": "PatientDataFlow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SourceDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "PatientDataSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "PatientDataBronzeDataSet",
+						"type": "DatasetReference"
+					},
+					"name": "BronzeDataLake"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          resourceType as string,",
+				"          id as string,",
+				"          text as (status as string, div as string),",
+				"          identifier as (use as string, type as (coding as (system as string, code as string)[]), system as string, value as string, period as (start as string), assigner as (display as string))[],",
+				"          active as boolean,",
+				"          name as (use as string, family as string, given as string[])[],",
+				"          telecom as (use as string)[],",
+				"          gender as string,",
+				"          birthDate as string,",
+				"          {_birthDate} as (extension as (url as string, valueDateTime as string)[]),",
+				"          deceasedBoolean as boolean,",
+				"          address as (use as string, type as string, text as string, line as string[], city as string, district as string, state as string, postalCode as string, period as (start as string))[],",
+				"          contact as (relationship as (coding as (system as string, code as string)[])[], name as (family as string, {_family} as (extension as (url as string, valueString as string)[]), given as string[]), telecom as (system as string, value as string)[], address as (use as string, type as string, line as string[], city as string, district as string, state as string, postalCode as string, period as (start as string)), gender as string, period as (start as string))[],",
+				"          managingOrganization as (reference as string)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> PatientDataSource",
+				"PatientDataSource sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          resourceType as string,",
+				"          id as string,",
+				"          text as (status as string, div as string),",
+				"          identifier as (use as string, type as (coding as (system as string, code as string)[]), system as string, value as string, period as (start as string), assigner as (display as string))[],",
+				"          active as boolean,",
+				"          name as (use as string, family as string, given as string[])[],",
+				"          telecom as (use as string)[],",
+				"          gender as string,",
+				"          birthDate as string,",
+				"          {_birthDate} as (extension as (url as string, valueDateTime as string)[]),",
+				"          deceasedBoolean as boolean,",
+				"          address as (use as string, type as string, text as string, line as string[], city as string, district as string, state as string, postalCode as string, period as (start as string))[],",
+				"          contact as (relationship as (coding as (system as string, code as string)[])[], name as (family as string, {_family} as (extension as (url as string, valueString as string)[]), given as string[]), telecom as (system as string, value as string)[], address as (use as string, type as string, line as string[], city as string, district as string, state as string, postalCode as string, period as (start as string)), gender as string, period as (start as string))[],",
+				"          managingOrganization as (reference as string)",
+				"     ),",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> BronzeDataLake"
+			]
+		}
+	}
+}
