@@ -22,6 +22,10 @@
 		"keyVaultLinkedService_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://bigdataywgug1c0mb-kv.vault.azure.net/"
+		},
+		"PatientFileAdded_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataywgug1c0mb_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataywgug1c0mb"
 		}
 	},
 	"variables": {
@@ -870,14 +874,7 @@
 					{
 						"name": "CopyFromBronzeToSilver",
 						"type": "DatabricksNotebook",
-						"dependsOn": [
-							{
-								"activity": "CopyFromSourceToBronze",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -906,6 +903,36 @@
 				"[concat(variables('factoryId'), '/datasets/SourceDataSet')]",
 				"[concat(variables('factoryId'), '/datasets/PatientDataBronzeDataSet')]",
 				"[concat(variables('factoryId'), '/linkedServices/databricksClusterLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PatientFileAdded')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PatientDataIngestion",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/patient-data-source/blobs/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('PatientFileAdded_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PatientDataIngestion')]"
 			]
 		}
 	]
