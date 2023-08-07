@@ -41,14 +41,7 @@
 					{
 						"name": "CopyFromSourceToBronze",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "SetFileNameVariable",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -101,6 +94,8 @@
 					{
 						"name": "CopyFromBronzeToSilver",
 						"type": "DatabricksNotebook",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -121,7 +116,14 @@
 					{
 						"name": "GetFileMetadata",
 						"type": "GetMetadata",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "CopyFromSourceToBronze",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
