@@ -491,7 +491,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "*.json",
+						"fileName": "*",
+						"folderPath": "*",
 						"container": "patient-data-source"
 					}
 				},
