@@ -108,6 +108,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -140,6 +141,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"triggerFileName": {
+				"type": "string",
+				"defaultValue": "@trigger().outputs.body.fileName"
+			}
+		},
 		"variables": {
 			"FileName": {
 				"type": "String"
