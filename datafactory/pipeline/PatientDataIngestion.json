@@ -132,9 +132,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "FileName",
+					"variableName": "ChildItems",
 					"value": {
-						"value": "@activity('GetFileMetadata').output.itemName",
+						"value": "@activity('GetFileMetadata').output.childItems",
 						"type": "Expression"
 					}
 				}
@@ -143,6 +143,9 @@
 		"variables": {
 			"FileName": {
 				"type": "String"
+			},
+			"ChildItems": {
+				"type": "Array"
 			}
 		},
 		"annotations": [],
