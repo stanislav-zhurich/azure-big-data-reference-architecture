@@ -847,7 +847,14 @@
 					{
 						"name": "CopyFromSourceToBronze",
 						"type": "Copy",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "SetFileNameVariable",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -922,14 +929,9 @@
 					{
 						"name": "GetFileMetadata",
 						"type": "GetMetadata",
-						"dependsOn": [
-							{
-								"activity": "CopyFromSourceToBronze",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -962,23 +964,16 @@
 					{
 						"name": "SetFileNameVariable",
 						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "GetFileMetadata",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"secureOutput": false,
 							"secureInput": false
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"variableName": "ChildItems",
+							"variableName": "TriggerFileName",
 							"value": {
-								"value": "@activity('GetFileMetadata').output.childItems",
+								"value": "@pipeline().parameters.triggerFileName",
 								"type": "Expression"
 							}
 						}
@@ -1000,6 +995,9 @@
 					},
 					"ChildItems": {
 						"type": "Array"
+					},
+					"TriggerFileName": {
+						"type": "String"
 					}
 				},
 				"annotations": [],
