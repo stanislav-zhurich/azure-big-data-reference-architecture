@@ -37,12 +37,7 @@
 					"sink": {
 						"type": "JsonSink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings",
-							"metadata": [
-								{
-									"value": ""
-								}
-							]
+							"type": "AzureBlobFSWriteSettings"
 						},
 						"formatSettings": {
 							"type": "JsonWriteSettings"
@@ -108,6 +103,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -133,7 +129,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "FileName",
-					"value": "@activity('GetFileMetadata').output.itemName"
+					"value": {
+						"value": "@activity('GetFileMetadata').output.itemName",
+						"type": "Expression"
+					}
 				}
 			}
 		],
