@@ -917,7 +917,7 @@
 								"parameters": {}
 							},
 							"fieldList": [
-								"itemName"
+								"structure"
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
@@ -948,7 +948,7 @@
 						"typeProperties": {
 							"variableName": "FileName",
 							"value": {
-								"value": "@activity('GetFileMetadata').output.itemName",
+								"value": "@activity('GetFileMetadata').output.structure",
 								"type": "Expression"
 							}
 						}
