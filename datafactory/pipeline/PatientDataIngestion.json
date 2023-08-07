@@ -97,15 +97,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "SourceDataSet",
-						"type": "DatasetReference"
+						"referenceName": "PatientDataBronzeDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "@concat(formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+						}
 					},
-					"fieldList": [
-						"itemName"
-					],
+					"fieldList": [],
 					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
+						"type": "AzureBlobFSReadSettings",
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
