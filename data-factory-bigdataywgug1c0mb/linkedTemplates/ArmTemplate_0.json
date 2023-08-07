@@ -823,7 +823,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "GetSourceFilesMetadata",
+								"activity": "SetFileNameVariable",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -899,7 +899,7 @@
 						}
 					},
 					{
-						"name": "GetSourceFilesMetadata",
+						"name": "GetFileMetadata",
 						"type": "GetMetadata",
 						"dependsOn": [],
 						"policy": {
@@ -921,10 +921,35 @@
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
 								"enablePartitionDiscovery": false
 							},
 							"formatSettings": {
 								"type": "JsonReadSettings"
+							}
+						}
+					},
+					{
+						"name": "SetFileNameVariable",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetFileMetadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "FileName",
+							"value": {
+								"value": "@activity('GetFileMetadata').output.itemName",
+								"type": "Expression"
 							}
 						}
 					}
@@ -932,6 +957,11 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"variables": {
+					"FileName": {
+						"type": "String"
+					}
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-07-31T12:15:10Z"
