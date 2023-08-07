@@ -23,7 +23,15 @@
 			"type": "string",
 			"defaultValue": "https://bigdataywgug1c0mb-kv.vault.azure.net/"
 		},
+		"PatientFileAdded_properties_PatientDataIngestion_parameters_triggerFileName": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
+		},
 		"PatientFileAdded_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataywgug1c0mb_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataywgug1c0mb"
+		},
+		"PatientFileAddedTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataywgug1c0mb_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataywgug1c0mb"
 		}
@@ -181,6 +189,12 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"triggerFileName": {
+						"type": "string",
+						"defaultValue": "@trigger().outputs.body.fileName"
+					}
 				},
 				"variables": {
 					"FileName": {
@@ -969,7 +983,9 @@
 							"referenceName": "PatientDataIngestion",
 							"type": "PipelineReference"
 						},
-						"parameters": {}
+						"parameters": {
+							"triggerFileName": "[parameters('PatientFileAdded_properties_PatientDataIngestion_parameters_triggerFileName')]"
+						}
 					}
 				],
 				"type": "BlobEventsTrigger",
@@ -985,6 +1001,26 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PatientDataIngestion')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PatientFileAddedTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/patient-data-source/blobs/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('PatientFileAddedTrigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime')]",
