@@ -128,7 +128,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "bronze",
+						"folderPath": "bronze/*/*/*",
 						"fileSystem": "datalake"
 					}
 				},
