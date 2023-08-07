@@ -134,15 +134,17 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "SourceDataSet",
+								"referenceName": "PatientDataBronzeDataSet",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"folder": "@concat(formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+								}
 							},
 							"fieldList": [
-								"itemName"
+								"childItems"
 							],
 							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
+								"type": "AzureBlobFSReadSettings",
 								"recursive": true,
 								"enablePartitionDiscovery": false
 							},
@@ -168,9 +170,9 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"variableName": "FileName",
+							"variableName": "ChildItems",
 							"value": {
-								"value": "@activity('GetFileMetadata').output.itemName",
+								"value": "@activity('GetFileMetadata').output.childItems",
 								"type": "Expression"
 							}
 						}
@@ -183,6 +185,9 @@
 				"variables": {
 					"FileName": {
 						"type": "String"
+					},
+					"ChildItems": {
+						"type": "Array"
 					}
 				},
 				"annotations": [],
