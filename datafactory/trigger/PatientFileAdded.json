@@ -8,6 +8,9 @@
 				"pipelineReference": {
 					"referenceName": "PatientDataIngestion",
 					"type": "PipelineReference"
+				},
+				"parameters": {
+					"triggerFileName": "@trigger().outputs.body.fileName"
 				}
 			}
 		],
