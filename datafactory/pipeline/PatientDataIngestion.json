@@ -99,7 +99,7 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"itemName"
+						"structure"
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
