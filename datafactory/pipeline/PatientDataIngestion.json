@@ -5,14 +5,7 @@
 			{
 				"name": "CopyFromSourceToBronze",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "GetSourceFilesMetadata",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -37,7 +30,12 @@
 					"sink": {
 						"type": "JsonSink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
+							"type": "AzureBlobFSWriteSettings",
+							"metadata": [
+								{
+									"value": ""
+								}
+							]
 						},
 						"formatSettings": {
 							"type": "JsonWriteSettings"
@@ -82,7 +80,7 @@
 				}
 			},
 			{
-				"name": "GetSourceFilesMetadata",
+				"name": "GetFileMetadata",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -109,6 +107,23 @@
 						"type": "JsonReadSettings"
 					}
 				}
+			},
+			{
+				"name": "SetFileNameVariable",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetFileMetadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"annotations": [],
