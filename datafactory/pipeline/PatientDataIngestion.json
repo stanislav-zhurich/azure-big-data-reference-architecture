@@ -164,27 +164,6 @@
 						"type": "Expression"
 					}
 				}
-			},
-			{
-				"name": "SetFolderNameVariable",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "CopyFromSourceToBronze",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "TriggerFolderName",
-					"value": ""
-				}
 			}
 		],
 		"parameters": {
