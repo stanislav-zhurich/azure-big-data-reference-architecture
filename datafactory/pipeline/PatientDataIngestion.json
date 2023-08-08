@@ -20,7 +20,16 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "patient-data-source//@{variables('TriggerFileName')}"
+					},
+					{
+						"name": "Destination",
+						"value": "datalake/@{concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')}/@{variables('FileName')}"
+					}
+				],
 				"typeProperties": {
 					"source": {
 						"type": "JsonSource",
@@ -62,7 +71,10 @@
 				"inputs": [
 					{
 						"referenceName": "SourceDataSet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"file": "@variables('TriggerFileName')"
+						}
 					}
 				],
 				"outputs": [
@@ -151,6 +163,27 @@
 						"value": "@pipeline().parameters.triggerFileName",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "SetFolderNameVariable",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "CopyFromSourceToBronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "TriggerFolderName",
+					"value": ""
 				}
 			}
 		],
