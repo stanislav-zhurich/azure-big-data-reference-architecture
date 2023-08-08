@@ -140,6 +140,10 @@
 			"triggerFileName": {
 				"type": "string",
 				"defaultValue": "@trigger().outputs.body.fileName"
+			},
+			"triggerFolderName": {
+				"type": "string",
+				"defaultValue": "@trigger().outputs.body.folderName"
 			}
 		},
 		"variables": {
