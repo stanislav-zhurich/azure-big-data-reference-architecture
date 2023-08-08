@@ -949,9 +949,14 @@
 					{
 						"name": "CopyFromBronzeToSilver",
 						"type": "DatabricksNotebook",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "CopyFromSourceToBronze",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -1027,6 +1032,10 @@
 					"triggerFileName": {
 						"type": "string",
 						"defaultValue": "@trigger().outputs.body.fileName"
+					},
+					"destination": {
+						"type": "string",
+						"defaultValue": "@variables('Destination')"
 					}
 				},
 				"variables": {
