@@ -152,7 +152,11 @@
 				"parameters": {
 					"folder": {
 						"type": "string",
-						"defaultValue": "@concat(formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+						"defaultValue": " @concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+					},
+					"file": {
+						"type": "string",
+						"defaultValue": "@variables(\"TriggerFileName\")"
 					}
 				},
 				"annotations": [],
@@ -160,7 +164,14 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "bronze/*/*/*",
+						"fileName": {
+							"value": "@dataset().file",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
 						"fileSystem": "datalake"
 					}
 				},
@@ -857,12 +868,6 @@
 								"dependencyConditions": [
 									"Succeeded"
 								]
-							},
-							{
-								"activity": "SetFolderNameVariable",
-								"dependencyConditions": [
-									"Succeeded"
-								]
 							}
 						],
 						"policy": {
@@ -984,23 +989,6 @@
 							"variableName": "TriggerFileName",
 							"value": {
 								"value": "@pipeline().parameters.triggerFileName",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "SetFolderNameVariable",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "TriggerFolderName",
-							"value": {
-								"value": "@pipeline().parameters.triggerFolderName",
 								"type": "Expression"
 							}
 						}
