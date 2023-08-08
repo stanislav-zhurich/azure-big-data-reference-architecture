@@ -6,13 +6,9 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"folder": {
+			"destination": {
 				"type": "string",
-				"defaultValue": " @concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
-			},
-			"file": {
-				"type": "string",
-				"defaultValue": "@variables('TriggerFileName')"
+				"defaultValue": "@variables('Destination')"
 			}
 		},
 		"annotations": [],
@@ -21,11 +17,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@dataset().file",
-					"type": "Expression"
-				},
-				"folderPath": {
-					"value": "@dataset().folder",
+					"value": "@dataset().destination",
 					"type": "Expression"
 				},
 				"fileSystem": "datalake"
