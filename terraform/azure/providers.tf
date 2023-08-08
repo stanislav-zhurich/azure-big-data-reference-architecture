@@ -6,9 +6,7 @@ provider "azurerm" {
 
 provider "databricks" {
   azure_workspace_resource_id = azurerm_databricks_workspace.databricks_workspace.id
-  host = azurerm_databricks_workspace.databricks_workspace.workspace_url
-  #azure_use_msi = true
-  #auth_type  = "azure-cli"
+  //auth_type  = "azure-cli"
 }
 
 /* provider "azuread" {
