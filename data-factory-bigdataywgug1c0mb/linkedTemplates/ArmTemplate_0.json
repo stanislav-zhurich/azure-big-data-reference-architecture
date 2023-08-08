@@ -522,13 +522,21 @@
 					"referenceName": "blobSourceBlobStorageLinkedService",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"file": {
+						"type": "string",
+						"defaultValue": "@variables('TriggerFileName')"
+					}
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "*",
-						"folderPath": "*",
+						"fileName": {
+							"value": "@dataset().file",
+							"type": "Expression"
+						},
 						"container": "patient-data-source"
 					}
 				},
