@@ -160,7 +160,7 @@
 				"typeProperties": {
 					"variableName": "Destination",
 					"value": {
-						"value": "/@{concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')}/@pipeline().parameters.triggerFileName}",
+						"value": "/@{concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'))}/pipeline().parameters.triggerFileName}",
 						"type": "Expression"
 					}
 				}
