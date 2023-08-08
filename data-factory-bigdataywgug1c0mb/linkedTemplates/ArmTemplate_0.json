@@ -881,7 +881,16 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "patient-data-source//@{variables('TriggerFileName')}"
+							},
+							{
+								"name": "Destination",
+								"value": "datalake/@{concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')}/@{variables('FileName')}"
+							}
+						],
 						"typeProperties": {
 							"source": {
 								"type": "JsonSource",
@@ -924,7 +933,9 @@
 							{
 								"referenceName": "SourceDataSet",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"file": "@variables('TriggerFileName')"
+								}
 							}
 						],
 						"outputs": [
