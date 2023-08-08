@@ -896,7 +896,21 @@
 									"type": "JsonWriteSettings"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "blobSourceBlobStorageLinkedService",
+										"type": "LinkedServiceReference"
+									},
+									"path": "adf-logs"
+								}
+							}
 						},
 						"inputs": [
 							{
@@ -1024,7 +1038,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataSet')]",
 				"[concat(variables('factoryId'), '/datasets/PatientDataBronzeDataSet')]",
-				"[concat(variables('factoryId'), '/linkedServices/databricksClusterLinkedService')]"
+				"[concat(variables('factoryId'), '/linkedServices/databricksClusterLinkedService')]",
+				"[concat(variables('factoryId'), '/linkedServices/blobSourceBlobStorageLinkedService')]"
 			]
 		},
 		{
