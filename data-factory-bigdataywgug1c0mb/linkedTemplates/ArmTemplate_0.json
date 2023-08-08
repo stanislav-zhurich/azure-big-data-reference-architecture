@@ -146,13 +146,9 @@
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"folder": {
+					"destination": {
 						"type": "string",
-						"defaultValue": " @concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
-					},
-					"file": {
-						"type": "string",
-						"defaultValue": "@variables('TriggerFileName')"
+						"defaultValue": "@variables('Destination')"
 					}
 				},
 				"annotations": [],
@@ -161,11 +157,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": {
-							"value": "@dataset().file",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
+							"value": "@dataset().destination",
 							"type": "Expression"
 						},
 						"fileSystem": "datalake"
@@ -934,7 +926,10 @@
 								"referenceName": "SourceDataSet",
 								"type": "DatasetReference",
 								"parameters": {
-									"file": "@variables('TriggerFileName')"
+									"file": {
+										"value": "@pipeline().parameters.triggerFileName",
+										"type": "Expression"
+									}
 								}
 							}
 						],
@@ -943,9 +938,8 @@
 								"referenceName": "PatientDataBronzeDataSet",
 								"type": "DatasetReference",
 								"parameters": {
-									"folder": "@concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')",
-									"file": {
-										"value": "@variables('FileName')",
+									"destination": {
+										"value": "@variables('Destination')",
 										"type": "Expression"
 									}
 								}
@@ -992,9 +986,7 @@
 							"dataset": {
 								"referenceName": "PatientDataBronzeDataSet",
 								"type": "DatasetReference",
-								"parameters": {
-									"folder": "@concat(formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
-								}
+								"parameters": {}
 							},
 							"fieldList": [
 								"childItems"
@@ -1021,7 +1013,7 @@
 						"typeProperties": {
 							"variableName": "Destination",
 							"value": {
-								"value": "@concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), pipeline().parameters.triggerFileName)\n",
+								"value": "@concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)\n",
 								"type": "Expression"
 							}
 						}
