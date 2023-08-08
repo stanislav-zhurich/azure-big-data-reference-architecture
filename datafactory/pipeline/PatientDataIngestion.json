@@ -11,12 +11,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "SetFolderNameVariable",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"policy": {
@@ -139,20 +133,6 @@
 						"value": "@pipeline().parameters.triggerFileName",
 						"type": "Expression"
 					}
-				}
-			},
-			{
-				"name": "SetFolderNameVariable",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "TriggerFolderName",
-					"value": "@pipeline().parameters.triggerFolderName"
 				}
 			}
 		],

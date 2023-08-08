@@ -8,7 +8,11 @@
 		"parameters": {
 			"folder": {
 				"type": "string",
-				"defaultValue": "@concat(formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+				"defaultValue": " @concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+			},
+			"file": {
+				"type": "string",
+				"defaultValue": "@variables(\"TriggerFileName\")"
 			}
 		},
 		"annotations": [],
@@ -16,7 +20,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "bronze/*/*/*",
+				"fileName": {
+					"value": "@dataset().file",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
 				"fileSystem": "datalake"
 			}
 		},
