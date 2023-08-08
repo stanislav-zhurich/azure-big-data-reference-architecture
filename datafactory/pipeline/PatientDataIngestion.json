@@ -73,7 +73,10 @@
 						"referenceName": "SourceDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"file": "@variables('TriggerFileName')"
+							"file": {
+								"value": "@pipeline().parameters.triggerFileName",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -82,9 +85,8 @@
 						"referenceName": "PatientDataBronzeDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": "@concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')",
-							"file": {
-								"value": "@variables('FileName')",
+							"destination": {
+								"value": "@variables('Destination')",
 								"type": "Expression"
 							}
 						}
