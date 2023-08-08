@@ -20,6 +20,9 @@
 		"PatientFileAdded_properties_PatientDataIngestion_parameters_triggerFileName": {
 			"value": "@trigger().outputs.body.fileName"
 		},
+		"PatientFileAdded_properties_PatientDataIngestion_parameters_triggerFolderName": {
+			"value": "@trigger().outputs.body.folderName"
+		},
 		"PatientFileAdded_properties_typeProperties_scope": {
 			"value": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataywgug1c0mb_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataywgug1c0mb"
 		},
