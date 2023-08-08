@@ -51,7 +51,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "SetFileNameVariable",
+								"activity": "SetDestinationVariable",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -193,7 +193,7 @@
 						}
 					},
 					{
-						"name": "SetFileNameVariable",
+						"name": "SetDestinationVariable",
 						"type": "SetVariable",
 						"dependsOn": [],
 						"policy": {
@@ -202,9 +202,9 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"variableName": "TriggerFileName",
+							"variableName": "Destination",
 							"value": {
-								"value": "@pipeline().parameters.triggerFileName",
+								"value": "/@{concat('bronze', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')}/@pipeline().parameters.triggerFileName}",
 								"type": "Expression"
 							}
 						}
@@ -231,6 +231,9 @@
 						"type": "String"
 					},
 					"TriggerFolderName": {
+						"type": "String"
+					},
+					"Destination": {
 						"type": "String"
 					}
 				},
