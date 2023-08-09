@@ -1,6 +1,22 @@
 {
 	"name": "PatientDataIngestion",
 	"properties": {
+		"activities": [
+			{
+				"name": "SetDestinationVariable",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Destination",
+					"value": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)\n"
+				}
+			}
+		],
 		"parameters": {
 			"triggerFileName": {
 				"type": "string",
