@@ -43,7 +43,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
+							"fileListPath": "patient-data-source/patient-01.json",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -66,7 +66,7 @@
 						"referenceName": "SourceDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"file": "@variables('TriggerFileName')"
+							"file": "@trigger().outputs.body.fileName"
 						}
 					}
 				],
