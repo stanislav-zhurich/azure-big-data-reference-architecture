@@ -1,3 +1,4 @@
+
 # Task 1 - Infrastructure Setup
 ## Objective 
 The goal of this task is to prepare Azure infrastrcructure to be able to complete following lessons.
@@ -5,10 +6,19 @@ The goal of this task is to prepare Azure infrastrcructure to be able to complet
  1. Azure personal account or [free trial](https://azure.microsoft.com/en-us/free) if available.
  2. [Terraform](https://www.terraform.io/) installed locally on your machine.
  3. [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) installed locally on your machine.
+ 4. Your personal git account is available from public internet (e.g. GitHub). It will be used by Azure Data Factory to store its artifacts.
 ## Steps
- 4. Navigate to */terraform/azure* folder and execute following command: `terraform install`. 
- 5. In the same directory execute command: `terraform apply`. Print `yes` once requested.
- 6. Installation might take some time, after completion you will have  core components being installed within your subscription. The picture below depicts main services to be installed.
+ 1. Navigate to */terraform/azure* and open *terraform.tvars* file.
+ 2. Add your git account setting in the following way: 
+
+>      git_account_name  =  git account name, e.g. "stanislav-zhurich"    
+>      git_branch_name  =  name of the branch, e.g. "develop"    
+>      git_repository_name  =  name of the repository, e.g. "azure-big-data-reference-architecture"
+>      git_root_folder  =  name of the folder where resources will be located, e.g. "/"
+>      git_url  =  name of your git provider, e.g. "https://github.com"
+ 3. Navigate to */terraform/azure* folder and execute following command: `terraform install`. 
+ 4. In the same directory execute command: `terraform apply`. Print `yes` once requested.
+ 5. Installation might take some time, after completion you will have  core components being installed within your subscription. The picture below depicts main services to be installed.
 ![enter image description here](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/initial-infra-v1.png)
 ## Validation
  1. Go to your Azure Subscription and validate that following components were successfully deployed:
