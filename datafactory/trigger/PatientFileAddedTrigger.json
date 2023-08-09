@@ -1,0 +1,17 @@
+{
+	"name": "PatientFileAddedTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/patient-data-source/blobs/",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataaaec09lzix_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataaaec09lzix",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
