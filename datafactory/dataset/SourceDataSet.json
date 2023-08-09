@@ -1,0 +1,25 @@
+{
+	"name": "SourceDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "blobSourceBlobStorageLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"file": {
+				"type": "string",
+				"defaultValue": "@variables('TriggerFileName')"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "@dataset().file",
+				"container": "patient-data-source"
+			}
+		},
+		"schema": {}
+	}
+}
