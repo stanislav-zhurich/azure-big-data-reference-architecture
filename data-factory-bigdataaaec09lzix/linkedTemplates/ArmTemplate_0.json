@@ -227,7 +227,7 @@
 								"referenceName": "SourceDataSet",
 								"type": "DatasetReference",
 								"parameters": {
-									"file": "@variables('TriggerFileName')"
+									"file": "@trigger().outputs.body.fileName"
 								}
 							}
 						],
