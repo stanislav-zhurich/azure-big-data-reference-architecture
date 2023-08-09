@@ -1,0 +1,84 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "data-factory-bigdataaaec09lzix"
+		},
+		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://sourcebigdataaaec09lzix.blob.core.windows.net"
+		},
+		"databricksClusterLinkedService_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0808-141124-v2bv7309"
+		},
+		"datalakeLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://datalakebigdataaaec09lzi.dfs.core.windows.net/"
+		},
+		"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://bigdataaaec09lzix-kv.vault.azure.net/"
+		},
+		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
+		},
+		"PatientFileAddedTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataaaec09lzix_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataaaec09lzix"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "data-factory-bigdataaaec09lzix_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint')]"
+					},
+					"databricksClusterLinkedService_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('databricksClusterLinkedService_properties_typeProperties_existingClusterId')]"
+					},
+					"datalakeLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
+					},
+					"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+						"value": "[parameters('keyVaultLinkedService_properties_typeProperties_baseUrl')]"
+					},
+					"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName": {
+						"value": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName')]"
+					},
+					"PatientFileAddedTrigger_properties_typeProperties_scope": {
+						"value": "[parameters('PatientFileAddedTrigger_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

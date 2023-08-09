@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "data-factory-bigdataaaec09lzix"
+		},
+		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+			"value": "https://sourcebigdataaaec09lzix.blob.core.windows.net"
+		},
+		"databricksClusterLinkedService_properties_typeProperties_existingClusterId": {
+			"value": "0808-141124-v2bv7309"
+		},
+		"datalakeLinkedService_properties_typeProperties_url": {
+			"value": "https://datalakebigdataaaec09lzi.dfs.core.windows.net/"
+		},
+		"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+			"value": "https://bigdataaaec09lzix-kv.vault.azure.net/"
+		},
+		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName": {
+			"value": "@trigger().outputs.body.fileName"
+		},
+		"PatientFileAddedTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataaaec09lzix_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataaaec09lzix"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
