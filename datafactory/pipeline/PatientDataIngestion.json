@@ -13,8 +13,72 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Destination",
-					"value": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)\n"
+					"value": {
+						"value": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)\n",
+						"type": "Expression"
+					}
 				}
+			},
+			{
+				"name": "CopyFromSourceToBronze",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "SetDestinationVariable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"file": "@variables('TriggerFileName')"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "PatientDataBronzeDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"destination": "@variables('Destination')"
+						}
+					}
+				]
 			}
 		],
 		"parameters": {
