@@ -1,0 +1,25 @@
+{
+	"name": "PatientDataBronzeDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "datalakeLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"destination": {
+				"type": "string",
+				"defaultValue": "@variables('Destination')"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "@dataset().destination",
+				"fileSystem": "datalake"
+			}
+		},
+		"schema": {}
+	}
+}
