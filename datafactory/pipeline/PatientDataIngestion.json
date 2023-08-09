@@ -43,7 +43,7 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"fileListPath": "patient-data-source/patient-01.json",
+							"recursive": true,
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
