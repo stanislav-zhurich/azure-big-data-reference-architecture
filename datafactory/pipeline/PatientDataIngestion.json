@@ -1,0 +1,24 @@
+{
+	"name": "PatientDataIngestion",
+	"properties": {
+		"parameters": {
+			"triggerFileName": {
+				"type": "string",
+				"defaultValue": "@trigger().outputs.body.fileName"
+			},
+			"destination": {
+				"type": "string",
+				"defaultValue": "@variables('Destination')"
+			}
+		},
+		"variables": {
+			"TriggerFileName": {
+				"type": "String"
+			},
+			"Destination": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
