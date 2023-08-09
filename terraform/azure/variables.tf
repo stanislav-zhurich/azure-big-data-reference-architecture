@@ -6,21 +6,24 @@ variable "environment" {
   default = "Big Data Reference Lab"
 }
 
-variable "data_factory_github_config" {
-  type = object({
-    account_name = string,
-    branch_name = string,
-    repository_name = string,
-    root_folder = string,
-    git_url = string
-  })
-  default = {
-    account_name = "stanislav-zhurich"
-    branch_name = "main"
-    repository_name = "azure-big-data-reference-architecture"
-    root_folder = "/datafactory"
-    git_url = "https://github.com"
-  }
+variable "git_account_name" {
+  type = string
+}
+
+variable "git_branch_name" {
+  type = string
+}
+
+variable "git_repository_name" {
+  type = string
+}
+
+variable "git_url" {
+  type = string
+}
+
+variable "git_root_folder" {
+  type = string
 }
 
 

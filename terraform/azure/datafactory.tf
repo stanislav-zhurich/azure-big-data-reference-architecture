@@ -3,11 +3,11 @@ resource "azurerm_data_factory" "data_factory" {
   location             = azurerm_resource_group.resource_group.location
   resource_group_name  = azurerm_resource_group.resource_group.name
   github_configuration {
-    account_name = "stanislav-zhurich"
-    branch_name = "main"
-    repository_name = "azure-big-data-reference-architecture"
-    root_folder = "/datafactory"
-    git_url = "https://github.com"
+    account_name = var.git_account_name
+    branch_name = var.git_branch_name
+    repository_name = var.git_repository_name
+    root_folder = var.git_root_folder
+    git_url = var.git_url
   }
   identity {
     type = "SystemAssigned"
