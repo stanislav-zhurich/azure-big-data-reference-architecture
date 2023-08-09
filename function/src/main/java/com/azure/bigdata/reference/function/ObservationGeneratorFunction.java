@@ -34,6 +34,16 @@ public class ObservationGeneratorFunction {
 
         try {
             String s = getFileInStringFromResources("/resources/observation-template.json");
+            TemplateValuesGenerator.Observation observation = TemplateValuesGenerator.getObservation();
+            s = s.replace("{patient_id}", TemplateValuesGenerator.getPersonId())
+                .replace("{id}", TemplateValuesGenerator.getId())
+                .replace("{systolic_value}", observation.getSystolic().getPressure())
+                .replace("{systolic_code}", observation.getSystolic().getCode())
+                .replace("{systolic_interpretation}", observation.getSystolic().getInterpretation())
+                .replace("{diastolic_value}", observation.getDiastolic().getPressure())
+                .replace("{diastolic_code}", observation.getDiastolic().getCode())
+                .replace("{diastolic_interpretation}", observation.getDiastolic().getInterpretation());
+            context.getLogger().info(s);
             return s;
         } catch (IOException e) {
             context.getLogger().warning(e.getMessage());

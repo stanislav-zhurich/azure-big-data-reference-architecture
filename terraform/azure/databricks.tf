@@ -28,7 +28,6 @@ resource "databricks_mount" "databricks_mound" {
   uri        = "abfss://${azurerm_storage_data_lake_gen2_filesystem.adls.name}@${azurerm_storage_account.datalake_storage_account.name}.dfs.core.windows.net"
   extra_configs = {
     "fs.azure.account.auth.type" : "OAuth",
-    #"fs.azure.account.auth.type.${azurerm_storage_account.datalake_storage_account.name}.dfs.core.windows.net" : "OAuth",
     "fs.azure.account.oauth.provider.type" : "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
     "fs.azure.account.oauth2.client.id" : azuread_service_principal.aad_service_sp.application_id
     "fs.azure.account.oauth2.client.secret" : "{{secrets/keyvault-managed/client-secret}}",
@@ -54,10 +53,12 @@ resource "databricks_cluster" "databricks_cluster" {
   }
 }
 
-resource "databricks_notebook" "notebook" {
-  path     = "${data.databricks_current_user.current.home}/pipeline/copyFromBronzeToSilver.py"
+
+resource "databricks_notebook" "notebooks" {
+  for_each  = toset(["/pipeline/schema/patient.py", "/pipeline/copyFromBronzeToSilver.py"])
+  path     = "${data.databricks_current_user.current.home}${each.value}"
   language = "PYTHON"
-  source   = "../../databricks/src/copyFromBronzeToSilver.py"
+  source   = "../../databricks/src${each.value}"
 }
 
 resource "azurerm_key_vault_secret" "adb_client_secret" {
