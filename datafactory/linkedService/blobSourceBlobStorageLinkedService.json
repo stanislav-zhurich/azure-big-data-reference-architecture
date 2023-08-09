@@ -1,0 +1,11 @@
+{
+	"name": "blobSourceBlobStorageLinkedService",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://sourcebigdataaaec09lzix.blob.core.windows.net"
+		},
+		"annotations": []
+	}
+}
