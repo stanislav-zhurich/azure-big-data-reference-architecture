@@ -118,6 +118,10 @@
 			"triggerFileName": {
 				"type": "string",
 				"defaultValue": "@trigger().outputs.body.fileName"
+			},
+			"destination": {
+				"type": "string",
+				"defaultValue": "@variables(\"Destination\")"
 			}
 		},
 		"variables": {
