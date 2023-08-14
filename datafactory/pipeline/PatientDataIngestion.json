@@ -105,6 +105,10 @@
 						"destination": {
 							"value": "@pipeline().parameters.destination",
 							"type": "Expression"
+						},
+						"destination1": {
+							"value": "@variables('Destination')",
+							"type": "Expression"
 						}
 					}
 				},
