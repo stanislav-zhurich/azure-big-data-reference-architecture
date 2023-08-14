@@ -165,7 +165,7 @@
 					},
 					"destination": {
 						"type": "string",
-						"defaultValue": "@pipeline().parameters.destination"
+						"defaultValue": "@variables(\"Destination\")"
 					}
 				},
 				"variables": {
