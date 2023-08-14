@@ -121,7 +121,7 @@
 			},
 			"destination": {
 				"type": "string",
-				"defaultValue": "@variables(\"Destination\")"
+				"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)"
 			}
 		},
 		"variables": {
