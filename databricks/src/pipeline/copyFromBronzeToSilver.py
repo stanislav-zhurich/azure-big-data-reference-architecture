@@ -9,6 +9,11 @@ from delta.tables import *
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 2. Read file_destination from a parameter (destination) passed by Data Factory. Use dbutils.
+
+# COMMAND ----------
+
 dbutils.widgets.text("destination", "")
 file_destination = dbutils.widgets.get("destination")
 absolute_path = "/mnt/datalake_mount/" + file_destination;
@@ -16,12 +21,7 @@ absolute_path = "/mnt/datalake_mount/" + file_destination;
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 2. Import schema from patient notebook using magic command
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC 3. Include schema from '../pipeline/schema/patient' file
+# MAGIC 3. Import patient schema '../pipeline/schema/patient' using magic command
 
 # COMMAND ----------
 
@@ -30,11 +30,7 @@ absolute_path = "/mnt/datalake_mount/" + file_destination;
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 4. Read data from bronze layer
-
-# COMMAND ----------
-
-display(dbutils.fs.mounts())
+# MAGIC 4. Read json data from bronze layer. As a path use 'absolute_path' variable defined above.
 
 # COMMAND ----------
 
@@ -43,7 +39,12 @@ df = df.dropDuplicates(subset = ['id'])
 
 # COMMAND ----------
 
-df.show()
+# MAGIC %md
+# MAGIC 5. Do the following transformations with data set:
+# MAGIC - add new column 'ingestion_date' with the value equal current timestamp.
+# MAGIC - change type of 'birthDate' column from string to date.
+# MAGIC - rename 'resourceType' column to 'resource_type'
+# MAGIC - rename 'birthdatDate' to 'birth_date'
 
 # COMMAND ----------
 
@@ -52,12 +53,6 @@ df_converted_date = df.withColumn("birth_date", to_date(col("birthDate"), 'yyyy-
     .withColumnRenamed("resourceType", "resource_type")\
     .drop(col("birthDate"))
 
-#df_address_explode = df_converted_date.select(explode(df.address))
-
-
-# COMMAND ----------
-
-df_converted_date.head()
 
 # COMMAND ----------
 
@@ -70,6 +65,11 @@ df_converted_date.head()
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 6. Create new table delta table (if not exists) using patient schema defined below and following location '/mnt/datalake_mount/silver/patient-table'. Also add new 'update_date' column.
+
+# COMMAND ----------
+
 patient_delta_table = DeltaTable.createIfNotExists(spark).location("/mnt/datalake_mount/silver/patient-table")\
   .tableName("patients") \
   .addColumns(df_converted_date.schema)\
@@ -78,7 +78,10 @@ patient_delta_table = DeltaTable.createIfNotExists(spark).location("/mnt/datalak
 
 # COMMAND ----------
 
-#patient_delta_table = DeltaTable.forPath(spark, "/mnt/datalake_mount/silver/patient-table")
+# MAGIC %md
+# MAGIC 7. Merge existing patient data with received updates. Use 'id' to match records. If record is updated change the value of 'update_date' to current timestamp, otherwise leave it blank.
+
+# COMMAND ----------
 
 patient_delta_table.alias('patients') \
   .merge(
@@ -112,6 +115,11 @@ patient_delta_table.alias('patients') \
     }
   ) \
   .execute()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 8. Execute 'select all' command using SQL syntax.
 
 # COMMAND ----------
 

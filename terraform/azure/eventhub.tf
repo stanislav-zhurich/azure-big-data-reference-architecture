@@ -28,3 +28,9 @@ resource "azurerm_eventhub_authorization_rule" "observation_eventhub_auth_rule" 
   send                = true
   manage              = true
 }
+
+resource "azurerm_key_vault_secret" "event_hub_connection_string_secret" {
+  name         = "eventhub-connection-string"
+  value        = azurerm_eventhub_authorization_rule.observation_eventhub_auth_rule.primary_connection_string
+  key_vault_id = azurerm_key_vault.key_vault.id
+} 

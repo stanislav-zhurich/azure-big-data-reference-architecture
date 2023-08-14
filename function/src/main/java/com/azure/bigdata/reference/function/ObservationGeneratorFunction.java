@@ -26,7 +26,7 @@ public class ObservationGeneratorFunction {
     @FunctionName("EventGenerator")
     @EventHubOutput(name = "event", eventHubName = "observation-generator-event-hub", connection = "accessPolicy")
     public String sendEvent(
-            @TimerTrigger(name = "eventTrigger", schedule = "0 */1 * * * *") String timerInfo,
+            @TimerTrigger(name = "eventTrigger", schedule = "*/20 * * * * *") String timerInfo,
             ExecutionContext context) {
         // timeInfo is a JSON string, you can deserialize it to an object using your
         // favorite JSON library

@@ -61,6 +61,14 @@ resource "databricks_notebook" "notebooks" {
   source   = "../../databricks/src${each.value}"
 }
 
+resource "databricks_library" "eventhub_library" {
+  cluster_id = databricks_cluster.databricks_cluster.id
+  maven {
+    coordinates = "com.microsoft.azure:azure-eventhubs-spark_2.12:2.3.22"
+    #exclusions = ["org.slf4j:slf4j-log4j12", "log4j:log4j"]
+  }
+}
+
 resource "azurerm_key_vault_secret" "adb_client_secret" {
   depends_on   = [azurerm_key_vault_access_policy.deployer_keyvault_policy]
   name         = "client-secret"
