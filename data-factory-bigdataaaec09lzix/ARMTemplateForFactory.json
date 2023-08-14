@@ -140,7 +140,13 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver.py"
+							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver.py",
+							"baseParameters": {
+								"destination": {
+									"value": "@pipeline().parameters.destination",
+									"type": "Expression"
+								}
+							}
 						},
 						"linkedServiceName": {
 							"referenceName": "databricksClusterLinkedService",
