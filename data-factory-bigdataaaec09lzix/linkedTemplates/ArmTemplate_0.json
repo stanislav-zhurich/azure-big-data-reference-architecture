@@ -198,7 +198,16 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "patient-data-source//@{pipeline().parameters.triggerFileName}"
+							},
+							{
+								"name": "Destination",
+								"value": "datalake//@{variables('Destination')}"
+							}
+						],
 						"typeProperties": {
 							"source": {
 								"type": "JsonSource",
@@ -264,7 +273,7 @@
 							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver.py",
 							"baseParameters": {
 								"file_destination": {
-									"value": "@pipeline().parameters.destination",
+									"value": "@variables('Destination')",
 									"type": "Expression"
 								}
 							}
@@ -286,7 +295,7 @@
 					},
 					"destination": {
 						"type": "string",
-						"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)"
+						"defaultValue": "@variables(\"Destination\")"
 					}
 				},
 				"variables": {
