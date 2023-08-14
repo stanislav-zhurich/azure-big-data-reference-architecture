@@ -10,6 +10,7 @@ As soon as data is saved in landing zone, the next step is to perform basic data
 4. Create new Databricks Notebook Activity.
 - Name: *CopyFromBronzeToSilver*
 - Select */pipeline/CopyFromBronzeToSilver.py* as a notebook to be run.
+- Add *destination* parameter with value set to *@pipeline().parameters.destination*
 5. Save and publish pipeline.
 ## Validation
 1.  Upload one of the patient sample files to  _sourcebigdata/patient-data-source/_  folder.
