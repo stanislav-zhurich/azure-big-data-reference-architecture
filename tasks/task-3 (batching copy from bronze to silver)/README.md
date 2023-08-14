@@ -14,5 +14,6 @@ As soon as data is saved in landing zone, the next step is to perform basic data
 ## Validation
 1.  Upload one of the patient sample files to  _sourcebigdata/patient-data-source/_  folder.
 2.  Go to  _Data Factory/Monitor/Pipeline Runs_  and make sure that pipeline is completed successfuly.
-3.  Go to  _datalake/silver/patient/yeat/month/day_  folder and make sure that file is copied successfuly.
+3.  Go to  _datalake/silver/patient_table_  folder and make that the structure resembles following one:
+![enter image description here](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task6-adls%20strcuture.png)
  
