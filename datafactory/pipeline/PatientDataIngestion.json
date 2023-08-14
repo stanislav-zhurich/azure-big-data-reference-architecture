@@ -118,10 +118,6 @@
 			"triggerFileName": {
 				"type": "string",
 				"defaultValue": "@trigger().outputs.body.fileName"
-			},
-			"destination": {
-				"type": "string",
-				"defaultValue": "@pipeline().parameters.destination"
 			}
 		},
 		"variables": {
