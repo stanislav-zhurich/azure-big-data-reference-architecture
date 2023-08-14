@@ -102,12 +102,8 @@
 				"typeProperties": {
 					"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver.py",
 					"baseParameters": {
-						"destination": {
+						"file_destination": {
 							"value": "@pipeline().parameters.destination",
-							"type": "Expression"
-						},
-						"destination1": {
-							"value": "@variables('Destination')",
 							"type": "Expression"
 						}
 					}
