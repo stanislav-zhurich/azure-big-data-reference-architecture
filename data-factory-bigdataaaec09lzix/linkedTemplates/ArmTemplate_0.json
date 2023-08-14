@@ -240,6 +240,33 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "CopyFromBronzeToSilver",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "CopyFromSourceToBronze",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver.py"
+						},
+						"linkedServiceName": {
+							"referenceName": "databricksClusterLinkedService",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -268,7 +295,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/PatientDataBronzeDataSet')]"
+				"[concat(variables('factoryId'), '/datasets/PatientDataBronzeDataSet')]",
+				"[concat(variables('factoryId'), '/linkedServices/databricksClusterLinkedService')]"
 			]
 		},
 		{
