@@ -302,9 +302,6 @@
 					},
 					"trigger_file_name": {
 						"type": "string"
-					},
-					"patient_id": {
-						"type": "string"
 					}
 				},
 				"annotations": []
