@@ -281,7 +281,7 @@
 							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromSilverToGold",
 							"baseParameters": {
 								"patient_id": {
-									"value": "@activity('CopyFromBronzeToSilver').output.pipelineReturnValue",
+									"value": "@activity('CopyFromBronzeToSilver').output.runOutput",
 									"type": "Expression"
 								}
 							}
