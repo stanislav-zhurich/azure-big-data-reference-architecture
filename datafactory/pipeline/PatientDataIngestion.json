@@ -13,16 +13,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "Source",
-						"value": "patient-data-source//@{pipeline().parameters.triggerFileName}"
-					},
-					{
-						"name": "Destination",
-						"value": "datalake//@{variables('Destination')}"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "JsonSource",
