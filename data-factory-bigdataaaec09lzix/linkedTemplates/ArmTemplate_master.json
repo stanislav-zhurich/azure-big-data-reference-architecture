@@ -29,7 +29,7 @@
 		},
 		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination": {
 			"type": "string",
-			"defaultValue": "@trigger().outputs.body.fileName"
+			"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)"
 		},
 		"PatientFileAddedTrigger_properties_typeProperties_scope": {
 			"type": "string",
