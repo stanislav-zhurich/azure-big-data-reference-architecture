@@ -7,8 +7,7 @@
 		},
 		"parameters": {
 			"destination": {
-				"type": "string",
-				"defaultValue": "@variables('Destination')"
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -16,7 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "@dataset().destination",
+				"fileName": {
+					"value": "@dataset().destination",
+					"type": "Expression"
+				},
 				"fileSystem": "datalake"
 			}
 		},
