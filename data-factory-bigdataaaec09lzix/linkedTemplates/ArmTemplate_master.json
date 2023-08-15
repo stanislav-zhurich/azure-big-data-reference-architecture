@@ -23,13 +23,13 @@
 			"type": "string",
 			"defaultValue": "https://bigdataaaec09lzix-kv.vault.azure.net/"
 		},
-		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName": {
-			"type": "string",
-			"defaultValue": "@trigger().outputs.body.fileName"
-		},
 		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination": {
 			"type": "string",
 			"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)"
+		},
+		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
 		},
 		"PatientFileAddedTrigger_properties_typeProperties_scope": {
 			"type": "string",
@@ -74,11 +74,11 @@
 					"keyVaultLinkedService_properties_typeProperties_baseUrl": {
 						"value": "[parameters('keyVaultLinkedService_properties_typeProperties_baseUrl')]"
 					},
-					"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName": {
-						"value": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName')]"
-					},
 					"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination": {
 						"value": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination')]"
+					},
+					"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+						"value": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_trigger_file_name')]"
 					},
 					"PatientFileAddedTrigger_properties_typeProperties_scope": {
 						"value": "[parameters('PatientFileAddedTrigger_properties_typeProperties_scope')]"

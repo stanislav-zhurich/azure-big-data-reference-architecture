@@ -23,13 +23,13 @@
 			"type": "string",
 			"defaultValue": "https://bigdataaaec09lzix-kv.vault.azure.net/"
 		},
-		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName": {
-			"type": "string",
-			"defaultValue": "@trigger().outputs.body.fileName"
-		},
 		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination": {
 			"type": "string",
 			"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)"
+		},
+		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
 		},
 		"PatientFileAddedTrigger_properties_typeProperties_scope": {
 			"type": "string",
@@ -106,8 +106,7 @@
 				},
 				"parameters": {
 					"destination": {
-						"type": "string",
-						"defaultValue": "@variables('Destination')"
+						"type": "string"
 					}
 				},
 				"annotations": [],
@@ -139,8 +138,7 @@
 				},
 				"parameters": {
 					"file": {
-						"type": "string",
-						"defaultValue": "@variables('TriggerFileName')"
+						"type": "string"
 					}
 				},
 				"annotations": [],
@@ -168,33 +166,9 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "SetDestinationVariable",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "Destination",
-							"value": {
-								"value": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)\n",
-								"type": "Expression"
-							}
-						}
-					},
-					{
 						"name": "CopyFromSourceToBronze",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "SetDestinationVariable",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -202,16 +176,7 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "patient-data-source//@{pipeline().parameters.triggerFileName}"
-							},
-							{
-								"name": "Destination",
-								"value": "datalake//@{variables('Destination')}"
-							}
-						],
+						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "JsonSource",
@@ -240,7 +205,10 @@
 								"referenceName": "SourceDataSet",
 								"type": "DatasetReference",
 								"parameters": {
-									"file": "@pipeline().parameters.triggerFileName"
+									"file": {
+										"value": "@pipeline().parameters.trigger_file_name",
+										"type": "Expression"
+									}
 								}
 							}
 						],
@@ -249,7 +217,10 @@
 								"referenceName": "PatientDataBronzeDataSet",
 								"type": "DatasetReference",
 								"parameters": {
-									"destination": "@variables('Destination')"
+									"destination": {
+										"value": "@pipeline().parameters.file_destination",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -293,25 +264,11 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"triggerFileName": {
-						"type": "string",
-						"defaultValue": "@trigger().outputs.body.fileName"
-					},
-					"destination": {
-						"type": "string",
-						"defaultValue": "@variables(\"Destination\")"
-					},
 					"file_destination": {
-						"type": "string",
-						"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)"
-					}
-				},
-				"variables": {
-					"TriggerFileName": {
-						"type": "String"
+						"type": "string"
 					},
-					"Destination": {
-						"type": "String"
+					"trigger_file_name": {
+						"type": "string"
 					}
 				},
 				"annotations": []
@@ -336,8 +293,8 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"triggerFileName": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName')]",
-							"file_destination": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination')]"
+							"file_destination": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination')]",
+							"trigger_file_name": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_trigger_file_name')]"
 						}
 					}
 				],
