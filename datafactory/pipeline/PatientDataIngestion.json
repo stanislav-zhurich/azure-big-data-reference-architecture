@@ -94,6 +94,39 @@
 					"referenceName": "databricksClusterLinkedService",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "CopyFromSilverToBronze",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "CopyFromBronzeToSilver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromSilverToGold",
+					"baseParameters": {
+						"patient_id": {
+							"value": "@activity('CopyFromBronzeToSilver').output.pipelineReturnValue",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "databricksClusterLinkedService",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
