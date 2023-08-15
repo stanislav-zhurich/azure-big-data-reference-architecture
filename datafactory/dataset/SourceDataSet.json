@@ -7,8 +7,7 @@
 		},
 		"parameters": {
 			"file": {
-				"type": "string",
-				"defaultValue": "@variables('TriggerFileName')"
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -16,7 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "@dataset().file",
+				"fileName": {
+					"value": "@dataset().file",
+					"type": "Expression"
+				},
 				"container": "patient-data-source"
 			}
 		},
