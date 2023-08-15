@@ -124,14 +124,6 @@
 			}
 		],
 		"parameters": {
-			"triggerFileName": {
-				"type": "string",
-				"defaultValue": "@trigger().outputs.body.fileName"
-			},
-			"destination": {
-				"type": "string",
-				"defaultValue": "@variables(\"Destination\")"
-			},
 			"file_destination": {
 				"type": "string",
 				"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)"
