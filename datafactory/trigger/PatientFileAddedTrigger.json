@@ -11,7 +11,8 @@
 				},
 				"parameters": {
 					"file_destination": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)",
-					"trigger_file_name": "@trigger().outputs.body.fileName"
+					"trigger_file_name": "@trigger().outputs.body.fileName",
+					"patient_id": "@activity('CopyFromBronzeToSilver').output.pipelineReturnValue"
 				}
 			}
 		],
