@@ -127,6 +127,9 @@
 			"file_destination": {
 				"type": "string",
 				"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)"
+			},
+			"trigger_file_name": {
+				"type": "string"
 			}
 		},
 		"variables": {
