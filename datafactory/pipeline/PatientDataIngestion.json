@@ -3,33 +3,9 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SetDestinationVariable",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "Destination",
-					"value": {
-						"value": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', pipeline().parameters.triggerFileName)\n",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "CopyFromSourceToBronze",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "SetDestinationVariable",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -75,7 +51,10 @@
 						"referenceName": "SourceDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"file": "@pipeline().parameters.triggerFileName"
+							"file": {
+								"value": "@pipeline().parameters.trigger_file_name",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -84,7 +63,10 @@
 						"referenceName": "PatientDataBronzeDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"destination": "@variables('Destination')"
+							"destination": {
+								"value": "@pipeline().parameters.file_destination",
+								"type": "Expression"
+							}
 						}
 					}
 				]
