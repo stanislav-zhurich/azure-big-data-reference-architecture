@@ -31,10 +31,6 @@
 			"type": "string",
 			"defaultValue": "@trigger().outputs.body.fileName"
 		},
-		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_patient_id": {
-			"type": "string",
-			"defaultValue": "@activity('CopyFromBronzeToSilver').output.pipelineReturnValue"
-		},
 		"PatientFileAddedTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataaaec09lzix_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataaaec09lzix"
@@ -334,8 +330,7 @@
 						},
 						"parameters": {
 							"file_destination": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination')]",
-							"trigger_file_name": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_trigger_file_name')]",
-							"patient_id": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_patient_id')]"
+							"trigger_file_name": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_trigger_file_name')]"
 						}
 					}
 				],
