@@ -115,14 +115,6 @@
 				"defaultValue": "@trigger().outputs.body.fileName"
 			}
 		},
-		"variables": {
-			"TriggerFileName": {
-				"type": "String"
-			},
-			"Destination": {
-				"type": "String"
-			}
-		},
 		"annotations": []
 	}
 }
