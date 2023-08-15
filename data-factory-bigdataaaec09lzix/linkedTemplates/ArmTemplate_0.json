@@ -27,6 +27,10 @@
 			"type": "string",
 			"defaultValue": "@trigger().outputs.body.fileName"
 		},
+		"PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
+		},
 		"PatientFileAddedTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdataaaec09lzix_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdataaaec09lzix"
@@ -332,7 +336,8 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"triggerFileName": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName')]"
+							"triggerFileName": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_triggerFileName')]",
+							"file_destination": "[parameters('PatientFileAddedTrigger_properties_PatientDataIngestion_parameters_file_destination')]"
 						}
 					}
 				],
