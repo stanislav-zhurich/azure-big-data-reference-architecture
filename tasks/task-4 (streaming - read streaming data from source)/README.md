@@ -9,4 +9,8 @@ The goal of the task is to continuosly read data from Azure Even Hub, transform 
 ## Validation
 1. Check if data is successfully streamed from EventHub and stored in data lake.
 ![ADLS structure](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task4-adls%20strcuture.png)
+2. From within databricks notebook execute following command:
+> select id, patient_id, systolic_pressure_value, diastolic_pressure_value from silver_observations
+3. Verify if result resembles something like this
+![result](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task4-result.png)
  
