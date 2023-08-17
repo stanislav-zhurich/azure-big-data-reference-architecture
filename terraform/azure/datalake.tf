@@ -26,6 +26,7 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "adls" {
     type        = "user"
     permissions = "rwx"
   }
+ 
   storage_account_id = azurerm_storage_account.datalake_storage_account.id
   depends_on         = [time_sleep.role_assignment_sleep]
 }
@@ -51,6 +52,11 @@ resource "azurerm_storage_data_lake_gen2_path" "datalake_path" {
   ace {
     id          = azuread_service_principal.aad_service_sp.application_id
     type        = "user"
+    permissions = "rwx"
+  }
+   ace {
+    id       = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id
+    type     = "user"
     permissions = "rwx"
   }
 }
