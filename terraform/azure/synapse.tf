@@ -34,3 +34,11 @@ resource "azurerm_synapse_firewall_rule" "allow_all_rule" {
   start_ip_address     = "0.0.0.0"
   end_ip_address       = "255.255.255.255"
 }
+
+resource "azurerm_role_assignment" "synapse_datalake_role_assignement" {  
+  for_each = toset(["Contributor", "Storage Blob Data Owner"])
+  role_definition_name               = each.value
+
+  scope                = azurerm_storage_account.datalake_storage_account.id  
+  principal_id         = azurerm_synapse_workspace.synapse_workspace.identity[0].principal_id  
+} 
