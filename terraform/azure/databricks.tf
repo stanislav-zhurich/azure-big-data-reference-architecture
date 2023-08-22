@@ -21,7 +21,7 @@ resource "azurerm_databricks_workspace" "databricks_workspace" {
   tags = local.tags
 }
 
-resource "databricks_mount" "databricks_mound" {
+resource "databricks_mount" "databricks_mount" {
   depends_on = [databricks_cluster.databricks_cluster, azurerm_key_vault.key_vault]
   name       = "datalake_mount"
   cluster_id = databricks_cluster.databricks_cluster.cluster_id
