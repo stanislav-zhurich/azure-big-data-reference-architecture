@@ -4,7 +4,7 @@
 # Task 7 - Consumtion Observation Data from Stream Analytics.
 ## Objective 
 Azure Stream Analytics is a serverless scalable event processing engine that helps to analyze real time observation data published to Event Hub. It can easely be integrated with multiple source and sink services. For the sake of simplicity and cost decreasing we will be writing data directly to Stream Analytics console. 
-![context](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task7-objective.png)
+![context](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task6-objective.png)
 
 ## Steps
 1. Go to Azure Stream Analytics Jobs via portal and navigate to one created for the course.
