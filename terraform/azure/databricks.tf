@@ -55,7 +55,9 @@ resource "databricks_cluster" "databricks_cluster" {
 
 
 resource "databricks_notebook" "notebooks" {
-  for_each  = toset(["/pipeline/schema/patient.py", "/pipeline/copyFromBronzeToSilver.py"])
+  for_each  = toset(["/pipeline/schema/patient.py","/pipeline/schema/observation.py", 
+  "/pipeline/copyFromBronzeToSilver.py", "/pipeline/copyFromSilverToGold.py", "/pipeline/readFromEventHub.py",
+  "/pipeline/writeToOutboundEventHub.py", "/pipeline/properties.py"])
   path     = "${data.databricks_current_user.current.home}${each.value}"
   language = "PYTHON"
   source   = "../../databricks/src${each.value}"

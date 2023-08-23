@@ -23,7 +23,7 @@ QUERY
   tags = local.tags
 }
 
-resource "azurerm_stream_analytics_stream_input_eventhub" "stream_input_eventhub" {
+/* resource "azurerm_stream_analytics_stream_input_eventhub" "stream_input_eventhub" {
   name                      = "eventhub-stream-input"
   stream_analytics_job_name = azurerm_stream_analytics_job.stream_analytics_job.name
   resource_group_name       = azurerm_resource_group.resource_group.name
@@ -34,7 +34,7 @@ resource "azurerm_stream_analytics_stream_input_eventhub" "stream_input_eventhub
     type     = "Json"
     encoding = "UTF8"
   }
-}
+} */
 
 resource "azurerm_role_assignment" "stream_analytics_event_hub_role_assignement" {
   for_each             = toset(["Contributor", "Azure Event Hubs Data Owner"])
