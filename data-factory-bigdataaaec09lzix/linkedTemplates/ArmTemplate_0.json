@@ -278,7 +278,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromSilverToGold",
+							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromSilverToGold.py",
 							"baseParameters": {
 								"patient_id": {
 									"value": "@string(activity('CopyFromBronzeToSilver').output.runOutput)",
