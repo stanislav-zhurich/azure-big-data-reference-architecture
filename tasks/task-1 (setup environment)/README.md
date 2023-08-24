@@ -19,7 +19,7 @@ The goal of this task is to prepare Azure infrastrcructure to complete following
  3. Navigate to */terraform/azure* folder and execute following command: `terraform install`. 
  4. In the same directory execute command: `terraform apply`. Print `yes` once requested.
  5. Installation might take some time, upon completion you will be provided with several endpoints, these are pathes to studios you will be working from. They will look like:
-> databricks_studio_url = "https://adb-123456789.19.azuredatabricks.net"
+> databricks_studio_url = "https://adb-123456789.19.azuredatabricks.net" \
 > datafactory_studio_url = "https://adf.azure.com/en/home"
 > synapse_studio_url = "https://web.azuresynapse.net?workspace=%2fsubscriptions%2f4d45zb6a-1310-f0g1-90c2-d82d4d3cbc5f%2fresourceGroups%2fbigdataaaec111lzix_rg%2fproviders%2fMicrosoft.Synapse%2fworkspaces%2fsynapse-workspace-bigdataaaec111lzix"
  6. After completion you will have core components being installed within your subscription. The picture below depicts main services. 
