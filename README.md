@@ -61,9 +61,10 @@ Oveall costs are expected to be around **$15**. They can be cut applying Free Tr
  - [Azure Synapse Analitics. End-to-And](https://learn.microsoft.com/en-us/azure/architecture/example-scenario/dataplate2e/data-platform-end-to-end?tabs=portal)
  - [Stream Processing with Databricks](https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/data/stream-processing-databricks)
  - [Stream Processing with Azure Stream Analytics](https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/data/stream-processing-stream-analytics)
-
+ - [Building ETL and Data Pipeline](https://videoportal.epam.com/video/kaEOA2Je)
 ### Azure Data Fundamental
--   [Microsoft Azure Data Fundamentals: Explore data analytics in Azure](https://learn.microsoft.com/en-us/training/paths/azure-data-fundamentals-explore-core-data-concepts/)
+-  [Azure Data Architecture Guide](https://learn.microsoft.com/en-us/azure/architecture/data-guide/)
+-  [Microsoft Azure Data Fundamentals: Explore data analytics in Azure](https://learn.microsoft.com/en-us/training/paths/azure-data-fundamentals-explore-core-data-concepts/)
 -   [Microsoft Azure Data Fundamentals: Explore relational data in Azure](https://learn.microsoft.com/en-us/training/paths/azure-data-fundamentals-explore-relational-data/)
 -   [Microsoft Azure Data Fundamentals: Explore non-relational data in Azure](https://learn.microsoft.com/en-us/training/paths/azure-data-fundamentals-explore-non-relational-data/)
 ### Azure Data Factory
@@ -72,5 +73,7 @@ Oveall costs are expected to be around **$15**. They can be cut applying Free Tr
 ### Azure Databricks
 - [Azure Databricks](https://learn.microsoft.com/en-us/azure/databricks/)
 - [Azure Databricks Essentials](https://www.linkedin.com/learning/azure-spark-databricks-essential-training/optimize-data-pipelines?dApp=53239054&leis=LAA&u=2113185)
+### Azure Stream Analytics
+- [Azure Stream Analytics](https://learn.microsoft.com/en-us/azure/stream-analytics/)
 ### Other Programs
 - [Azure Data Integration Mentoring Program](https://learn.epam.com/detailsPage?id=9ada9581-85ef-41a4-be42-340452be3e93)
