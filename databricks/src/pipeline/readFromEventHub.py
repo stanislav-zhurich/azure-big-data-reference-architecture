@@ -18,13 +18,17 @@ spark.conf.set("spark.databricks.delta.constraints.allowUnenforcedNotNull.enable
 
 # COMMAND ----------
 
-# MAGIC %run "../pipeline/schema/observation"
+# MAGIC %run "../pipeline/schema/observation.py"
+
+# COMMAND ----------
+
+# MAGIC %run "../pipeline/properties.py"
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC 3. Read event hub connection string value from secrets. It has been already added during installation process. Use *dbutils.secrets.get()* method.
-# MAGIC  - key = *eventhub-connection-string*
+# MAGIC  - key = *source-eventhub-connection-string*
 # MAGIC  - secrets name = *keyvault-managed*
 
 # COMMAND ----------
@@ -110,8 +114,8 @@ select_df = df.select(from_json(col("body").cast("STRING"), schema=schema).alias
 
 # COMMAND ----------
 
-DeltaTable.createIfNotExists(spark).location("/mnt/datalake_mount/silver/observation_table")\
-  .tableName("silver_observations").partitionedBy("patient_id")\
+DeltaTable.createIfNotExists(spark).location(silver_observations_table_location)\
+  .tableName(silver_observations_table_name).partitionedBy("patient_id")\
   .addColumns(select_df.schema).execute()
 
 # COMMAND ----------
@@ -130,15 +134,8 @@ DeltaTable.createIfNotExists(spark).location("/mnt/datalake_mount/silver/observa
 
 # COMMAND ----------
 
-
-    
 select_df.writeStream.format("delta").partitionBy("patient_id").outputMode("append").option("inferSchema", "true").option("mergeSchema", "true").option("checkpointLocation", checkpoint_path).option("schemaTrackingLocation", checkpoint_path)\
-   .toTable("silver_observations")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC select count(*) from silver_observations
+   .toTable(silver_observations_table_name)
 
 # COMMAND ----------
 

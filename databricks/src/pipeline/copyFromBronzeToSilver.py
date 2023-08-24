@@ -11,7 +11,16 @@ import json
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 2. Import *properties.py* file.
+# MAGIC 2. List all available mounts, make sure that */mnt/datalake_mount* is availble and points to your datalake storage.
+
+# COMMAND ----------
+
+display(dbutils.fs.mounts())
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 3. Import *properties.py* file using magic command. The file contains usefull constants you might find handy for your code.
 # MAGIC > Hint: use *%run* magic command 
 
 # COMMAND ----------
@@ -21,19 +30,19 @@ import json
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 2. Read *file_destination*  parameter passed from within Data Factory pipeline. 
+# MAGIC 4. Read *file_destination*  parameter passed from within Data Factory pipeline. 
 # MAGIC > Hint: use *dbutils.widgets.get* method.
 
 # COMMAND ----------
 
 dbutils.widgets.text("file_destination", "")
 file_destination = dbutils.widgets.get("file_destination")
-absolute_path = "/mnt/datalake_mount/" + file_destination;
+absolute_path = mount_prefix + file_destination;
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 3. Import patient schema '../pipeline/schema/patient.py' using magic command
+# MAGIC 5. Import patient schema '../pipeline/schema/patient.py'.
 
 # COMMAND ----------
 
@@ -42,7 +51,7 @@ absolute_path = "/mnt/datalake_mount/" + file_destination;
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 4. Read json data from bronze layer. As a path use 'absolute_path' variable defined above.
+# MAGIC 6. Read json data from bronze layer. As a path use parameter read from Data Factory prefixed with moint endpoint.
 
 # COMMAND ----------
 
@@ -51,8 +60,12 @@ df = df.dropDuplicates(subset = ['id'])
 
 # COMMAND ----------
 
+display(df)
+
+# COMMAND ----------
+
 # MAGIC %md
-# MAGIC 5. Select following columns and apply transformations for dataframe:
+# MAGIC 7. Select following columns and apply transformations for dataframe:
 # MAGIC - id => id
 # MAGIC - gender => gender
 # MAGIC - active => active
@@ -94,7 +107,11 @@ df_converted_data = df.select(col("resourceType").alias("resource_type"),\
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 6. Create new table delta "silver_patients" table (if not exists) using patient schema defined below and following location '/mnt/datalake_mount/silver/patient_table'. Also add new 'update_date' column.
+# MAGIC 8. Create new delta tabl (if not exists):
+# MAGIC  - use patient schema defined above.
+# MAGIC  - location - *silver_table_location* from *properties* file. 
+# MAGIC  - table name - *silver_table_name* from *properties* file.
+# MAGIC  - add new *update_date* column.
 
 # COMMAND ----------
 
@@ -102,10 +119,8 @@ df_converted_data = df.select(col("resourceType").alias("resource_type"),\
 
 # COMMAND ----------
 
-silver_table_location = 
-
-patient_delta_table = DeltaTable.createIfNotExists(spark).location("/mnt/datalake_mount/silver/patient_table")\
-  .tableName("silver_patients") \
+patient_delta_table = DeltaTable.createIfNotExists(spark).location(silver_patients_table_location)\
+  .tableName(silver_patients_table_name) \
   .addColumns(df_converted_data.schema)\
   .addColumn("update_date", "TIMESTAMP")\
   .execute()
@@ -113,16 +128,7 @@ patient_delta_table = DeltaTable.createIfNotExists(spark).location("/mnt/datalak
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 7. Merge existing patient data with received updates. Use 'id' to match records. If record is updated change the value of 'update_date' to current timestamp, otherwise leave it blank.
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC df_converted_date.write.mode("overwrite").format("delta").option("path", "/path/to/external/table").saveAsTable("silver_patients")
-
-# COMMAND ----------
-
-df_converted_data.first()["id"]
+# MAGIC 9. Merge existing patient data with received updates. Use 'id' to match records. If record is updated change the value of 'update_date' to current timestamp, otherwise leave it blank.
 
 # COMMAND ----------
 
@@ -175,7 +181,7 @@ patient_delta_table.alias('patients') \
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 8. Execute 'select all' command using SQL syntax.
+# MAGIC 10. Execute *select ** command using SQL syntax. Check if data is added.
 
 # COMMAND ----------
 
@@ -185,7 +191,8 @@ patient_delta_table.alias('patients') \
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 9. Return arrays of patient's ids that were modified. Use *dbutils.notebook.exit* method.
+# MAGIC 11. We need to pass id of the patient back to Data Factory pipeline. Return arrays of patient's ids that were modified. Use *dbutils.notebook.exit* method. The returned parameter should be array of ids converted to string.
+# MAGIC > Hint: use json.dumps method
 
 # COMMAND ----------
 

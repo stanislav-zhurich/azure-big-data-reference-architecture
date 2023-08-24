@@ -19,21 +19,22 @@ import json
 dbutils.widgets.text("patient_id", "")
 str_patient_id = dbutils.widgets.get("patient_id")
 patient_id = json.loads(str_patient_id)[0]
-print(patient_id)
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC 3. Read and join data from *silver_patients* and *silver_observations* tables.
-# MAGIC - select following columns: *silver_patients.id, amily_name, given_name, work_phone, mobile_phone, gender,birth_date,active, city, district,line, postal_code, state*.
+# MAGIC - select following columns: *silver_patients.id, family_name, given_name, work_phone, mobile_phone, gender,birth_date,active, city, district,line, postal_code, state*.
 # MAGIC - find average *systolic_pressure_value* and *diastolic_pressure_value*. Add it to select statement, not forgetting to add right grouping.
 
 # COMMAND ----------
 
+# MAGIC %run "../pipeline/properties.py"
+
+# COMMAND ----------
+
 patients_observations = spark.sql(
-    "select avg(systolic_pressure_value) as avg_systolic_pressure, avg(diastolic_pressure_value) as avg_diastolic_pressure, p.id, family_name, given_name, work_phone, mobile_phone, gender,birth_date,active, city,district,line,postal_code,state from silver_patients p join silver_observations o on p.id = o.patient_id where p.id = {patient_id} group by p.id, family_name, given_name, work_phone, mobile_phone, gender,birth_date,active, city,district,line,postal_code,state", 
-    patient_id = patient_id)
-display(patients_observations)
+    f"select avg(systolic_pressure_value) as avg_systolic_pressure, avg(diastolic_pressure_value) as avg_diastolic_pressure, p.id, family_name, given_name, work_phone, mobile_phone, gender,birth_date,active, city,district,line,postal_code,state from {silver_patients_table_name} p join {silver_observations_table_name} o on p.id = o.patient_id where p.id = '{patient_id}' group by p.id, family_name, given_name, work_phone, mobile_phone, gender,birth_date,active, city,district,line,postal_code,state")
 
 # COMMAND ----------
 
@@ -50,8 +51,8 @@ display(patients_observations)
 
 # COMMAND ----------
 
-patient_observation_table = DeltaTable.createIfNotExists(spark).location("/mnt/datalake_mount/gold/patient_observation_table")\
-  .tableName("gold_patient_observations") \
+patient_observation_table = DeltaTable.createIfNotExists(spark).location(gold_patient_observations_table_location)\
+  .tableName(gold_patient_observations_table_name) \
   .addColumns(patients_observations.schema)\
   .addColumn("update_date", "TIMESTAMP")\
   .addColumn("ingestion_date", "TIMESTAMP")\

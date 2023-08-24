@@ -10,6 +10,10 @@ import json
 
 # COMMAND ----------
 
+# MAGIC %run "../pipeline/properties.py"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 2. Make sure that *change data feed* support is enabled for the *silver_observations* table
 
@@ -22,7 +26,7 @@ import json
 
 spark.readStream.format("delta") \
   .option("readChangeFeed", "true") \
-  .table("silver_observations") \
+  .table(silver_observations_table_name) \
   .createOrReplaceTempView("temp_observations")
 
 # COMMAND ----------
@@ -48,6 +52,7 @@ checkpoint_path = "/mnt/datalake_mount/gold/temp/observations/_checkpoints/"
 # MAGIC - diastolic_pressure_value
 # MAGIC - diastolic_interpretation
 # MAGIC - ingestion_date
+# MAGIC
 # MAGIC Join following data from *patient* table:
 # MAGIC - patient_id
 # MAGIC - family_name
@@ -55,7 +60,7 @@ checkpoint_path = "/mnt/datalake_mount/gold/temp/observations/_checkpoints/"
 
 # COMMAND ----------
 
-df = spark.sql("select patient_id, family_name, given_name, systolic_pressure_value, systolic_interpretation, diastolic_pressure_value, diastolic_interpretation, o.ingestion_date from temp_observations o join silver_patients p on o.patient_id = p.id")
+df = spark.sql(f"select patient_id, family_name, given_name, systolic_pressure_value, systolic_interpretation, diastolic_pressure_value, diastolic_interpretation, o.ingestion_date from temp_observations o join {silver_patients_table_name} p on o.patient_id = p.id")
 
 # COMMAND ----------
 
