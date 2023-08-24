@@ -36,31 +36,7 @@
 						}
 					},
 					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "SourceDataSet",
-						"type": "DatasetReference",
-						"parameters": {
-							"file": {
-								"value": "@pipeline().parameters.trigger_file_name",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "PatientDataBronzeDataSet",
-						"type": "DatasetReference",
-						"parameters": {
-							"destination": {
-								"value": "@pipeline().parameters.file_destination",
-								"type": "Expression"
-							}
-						}
-					}
-				]
+				}
 			},
 			{
 				"name": "CopyFromBronzeToSilver",
