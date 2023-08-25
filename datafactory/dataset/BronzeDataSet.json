@@ -1,0 +1,24 @@
+{
+	"name": "BronzeDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "datalakeLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"file_destination": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "@dataset().destination",
+				"fileSystem": "datalake"
+			}
+		},
+		"schema": {}
+	}
+}
