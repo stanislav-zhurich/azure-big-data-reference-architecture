@@ -1,4 +1,4 @@
-
+> Time: 1 hour
 # Task 1 - Infrastructure Setup
 ## Objective 
 The goal of this task is to prepare Azure infrastrcructure to complete following lessons. You will be provided with Terraform scripts that will setup all required components. In scope of this project you will be doing coding tasks mostly on top of already created component just to avoid tedious and error-prone configuration part.
