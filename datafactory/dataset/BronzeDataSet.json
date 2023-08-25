@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"file_destination": {
+			"destination": {
 				"type": "string"
 			}
 		},
@@ -15,7 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "@dataset().destination",
+				"fileName": {
+					"value": "@dataset().destination",
+					"type": "Expression"
+				},
 				"fileSystem": "datalake"
 			}
 		},
