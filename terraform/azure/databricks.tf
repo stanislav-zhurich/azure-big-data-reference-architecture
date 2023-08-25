@@ -97,8 +97,8 @@ resource "databricks_secret_scope" "kv" {
 }
 
 resource "azuread_application" "databricks_service_application" {
-  display_name    = "databricks_service_application"
-  identifier_uris = ["api://databricks_service_application"]
+  display_name    = substr("databricks_service_application${local.resource_prefix}", 0, 63)
+  identifier_uris = ["api://${substr("databricks_service_application${local.resource_prefix}", 0, 63)}"]
   owners          = [data.azuread_client_config.current.object_id]
 }
 
