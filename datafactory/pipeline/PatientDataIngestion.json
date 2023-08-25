@@ -51,7 +51,7 @@
 						"referenceName": "BronzeDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"file_destination": "@pipeline().parameters.file_destination"
+							"destination": "@pipeline().parameters.file_destination"
 						}
 					}
 				]
@@ -61,7 +61,7 @@
 			"trigger_file_name": {
 				"type": "string"
 			},
-			"file_destination": {
+			"destination": {
 				"type": "string"
 			}
 		},
