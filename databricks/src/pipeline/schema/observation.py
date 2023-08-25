@@ -1,5 +1,5 @@
 # Databricks notebook source
-from pyspark.sql.types import StructType, StructField, IntegerType, StringType, DateType, BooleanType, ArrayType
+from pyspark.sql.types import StructType, StructField, StringType, ArrayType
 
 identifier_schema =  ArrayType(
         StructType(fields=[

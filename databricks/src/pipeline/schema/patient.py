@@ -1,5 +1,5 @@
 # Databricks notebook source
-from pyspark.sql.types import StructType, StructField, IntegerType, StringType, DateType, BooleanType, ArrayType
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType, BooleanType, ArrayType
 
 address_schema = ArrayType(StructType(fields=[StructField("city", StringType(), True), StructField("district", StringType(), False),
             StructField("postalCode", StringType(), False), StructField("state", StringType(), False), StructField("type", StringType(), False),
