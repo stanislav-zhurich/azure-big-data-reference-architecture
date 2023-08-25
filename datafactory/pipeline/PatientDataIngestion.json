@@ -1,0 +1,14 @@
+{
+	"name": "PatientDataIngestion",
+	"properties": {
+		"parameters": {
+			"trigger_file_name": {
+				"type": "string"
+			},
+			"file_destination": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
