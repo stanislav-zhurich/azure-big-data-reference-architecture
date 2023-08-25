@@ -48,12 +48,14 @@ resource "azurerm_eventhub_authorization_rule" "target_observation_eventhub_auth
 }
 
 resource "azurerm_key_vault_secret" "source_event_hub_connection_string_secret" {
+  depends_on = [ azurerm_key_vault_access_policy.deployer_keyvault_policy ]
   name         = "source-eventhub-connection-string"
   value        = azurerm_eventhub_authorization_rule.observation_eventhub_auth_rule.primary_connection_string
   key_vault_id = azurerm_key_vault.key_vault.id
 } 
 
 resource "azurerm_key_vault_secret" "target_event_hub_connection_string_secret" {
+  depends_on = [ azurerm_key_vault_access_policy.deployer_keyvault_policy ]
   name         = "target-eventhub-connection-string"
   value        = azurerm_eventhub_authorization_rule.target_observation_eventhub_auth_rule.primary_connection_string
   key_vault_id = azurerm_key_vault.key_vault.id

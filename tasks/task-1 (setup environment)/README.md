@@ -5,6 +5,7 @@ The goal of this task is to prepare Azure infrastrcructure to complete following
 ## Prerequisites
  1. Azure personal account or [free trial](https://azure.microsoft.com/en-us/free) if available.
  2. [Terraform](https://www.terraform.io/) installed locally on your machine.
+> It's required to be connected to VPN once you are working from Belarus.
  3. [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) installed locally on your machine.
  4. Your personal git account is available from public internet (e.g. GitHub). It will be used by Azure Data Factory to store its artifacts.
 ## Steps
