@@ -3,17 +3,7 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "PatientDataIngestion",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"triggerFileName": "@trigger().outputs.body.fileName"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/patient-data-source/blobs/",
