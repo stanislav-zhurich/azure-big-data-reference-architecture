@@ -4,7 +4,7 @@
 	"properties": {
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"serviceEndpoint": "https://sourcebigdataaaec09lzix.blob.core.windows.net"
+			"serviceEndpoint": "https://sourcebigdata4anyoh1fc1.blob.core.windows.net"
 		},
 		"annotations": []
 	}
