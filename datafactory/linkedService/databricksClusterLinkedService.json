@@ -1,0 +1,15 @@
+{
+	"name": "databricksClusterLinkedService",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"accessToken": null,
+			"authentication": "MSI",
+			"domain": "https://adb-7708773640554415.15.azuredatabricks.net",
+			"existingClusterId": "0825-111156-bcouu6w0",
+			"workspaceResourceId": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdata4anyoh1fc1_rg/providers/Microsoft.Databricks/workspaces/databricks-workspace-bigdata4anyoh1fc1"
+		},
+		"annotations": []
+	}
+}

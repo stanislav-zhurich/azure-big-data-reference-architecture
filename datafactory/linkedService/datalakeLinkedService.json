@@ -1,0 +1,11 @@
+{
+	"name": "datalakeLinkedService",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://datalakebigdata4anyoh1fc.dfs.core.windows.net/"
+		},
+		"annotations": []
+	}
+}
