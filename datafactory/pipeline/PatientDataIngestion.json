@@ -51,7 +51,7 @@
 						"referenceName": "BronzeDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"destination": "@pipeline().parameters.file_destination"
+							"destination": "@pipeline().parameters.destination"
 						}
 					}
 				]
