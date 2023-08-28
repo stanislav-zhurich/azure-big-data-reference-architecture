@@ -19,8 +19,9 @@ This is the first step in the batching process. The goal of the task is to copy 
 - Type: *storage event*
 - Storage Account Name: *your storage account*
 - Container Name:  *patient-data-source*
-- Parameter *trigger_file_name* is set to *@trigger().outputs.body.fileName*
-- Parameter *file_destination* is set to *@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)*
+- Event: *blob created*
+- Parameter *trigger_file_name* set to *@trigger().outputs.body.fileName*
+- Parameter *file_destination* set to *@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)*
 5. To access source data we need to create pipeline dataset and connect it to the linked service.
 - Go to Datasets and start creating new one.
 - From available data stores select *Azure Blob Storage*.
@@ -40,11 +41,11 @@ This is the first step in the batching process. The goal of the task is to copy 
 - Set *Non* as import schema option.
 - Go to Dataset parameters and create new one with empty value:
 > file_destination(String) 
-7. Add *Copy Activity* to pipeline.
-- As a *source* select DataSource created on step 6.
+7. Add *Copy Data* activity to pipeline.
+- As a *source* select DataSource created on step 5.
 - As a *file* data set property set following value:
 > @pipeline().parameters.trigger_file_name
-- As a *sink* select DataSource created on step 7. 
+- As a *sink* select DataSource created on step 6. 
 - As a *destination* data set property set following value:
 > @pipeline().parameters.file_destination
 8. Click on validate, save and publish pipeline.
