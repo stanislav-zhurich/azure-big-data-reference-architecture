@@ -14,3 +14,5 @@ The goal of the task is to continuosly read data from Azure Even Hub, transform 
 3. Verify if result resembles something like this
 ![result](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task4-result.png)
  
+## Cleanup
+1. Do not forget to **stop the job manually**, as long as it's streaming one it will keep running without not being killed explicitly.
