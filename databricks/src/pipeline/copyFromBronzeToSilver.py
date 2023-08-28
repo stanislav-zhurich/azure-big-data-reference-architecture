@@ -17,7 +17,7 @@
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC 4. Read file_destination parameter passed from within Data Factory pipeline.
+# MAGIC 4. Read *destination* parameter passed from within Data Factory pipeline.
 # MAGIC > Hint: use dbutils.widgets.get method.
 
 # COMMAND ----------
