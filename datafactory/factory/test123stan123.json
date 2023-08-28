@@ -1,9 +1,0 @@
-{
-	"name": "test123stan123",
-	"location": "eastus",
-	"identity": {
-		"type": "SystemAssigned",
-		"principalId": "19293892-3b37-4ef9-9e95-f005292e60e7",
-		"tenantId": "728ec391-9e63-400e-883f-f7fd4a75ac01"
-	}
-}
