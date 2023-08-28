@@ -1,10 +1,11 @@
 
 # Task 4 - Streaming: from Source to Silver.
+> **Time to complete**: 3 hour
 ## Objective 
-The goal of the task is to continuosly read data from Azure Even Hub, transform it and store to Silver (refined) layer.
+The goal of the task is to continuosly stream data from Azure Even Hub, transform it and store into Silver (refined) layer.
 ![objective](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task4-objective.png)
 ## Steps
-1. Go to database cluster and open *readFromEvenHub.py* notebook.
+1. Go to databricks cluster and open *readFromEvenHub.py* notebook.
 2. Complete all steps defined in this notebook.
 ## Validation
 1. Check if data is successfully streamed from EventHub and stored in data lake.
