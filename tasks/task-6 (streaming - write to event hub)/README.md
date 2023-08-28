@@ -17,3 +17,6 @@ The goal of the task is to stream patient observation events stored in Delta tab
 1. Make sure that notebook writes events to outbound event hub. Check the dashboard:
 ![dashboard](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task6%20-%20outbbound%20eventhub.png)
 
+## Cleanup
+1. Make sure that both streaming jobs (readFromEventHub.py and writeToOutboundEventHub.py) are **stopped manually**, otherwise they will keep running indefinitly.
+
