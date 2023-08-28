@@ -2,21 +2,28 @@
 # MAGIC %md
 # MAGIC 1. Import required libraries.
 
+# COMMAND ----------
 
-# MAGIC %md
-# MAGIC 2. Import *observation* schema using magic command.
+# MAGIC %md 2. 
+# MAGIC Import *observation* schema using magic (run) command.
 
-# MAGIC %md
+# COMMAND ----------
+
+# MAGIC %md 
 # MAGIC 3. Read event hub connection string value from secrets. It has been already added during installation process. Use *dbutils.secrets.get()* method.
-# MAGIC  - key = *source-eventhub-connection-string*
-# MAGIC  - secrets name = *keyvault-managed*
+# MAGIC - key = source-eventhub-connection-string
+# MAGIC - secrets name = keyvault-managed
 
-# MAGIC %md
+# COMMAND ----------
+
+# MAGIC %md 
 # MAGIC 4. Read stream of events from event hub.
-# MAGIC - Use *eventhubs* format option.
+# MAGIC - Use eventhubs format option.
 # MAGIC - Add checkpoint location option.
 # MAGIC - To retrieve payload from the binary data use following statement:
 # MAGIC > df.select(from_json(col("body").cast("STRING"), schema=schema).alias("data")).select("data.*")
+
+# COMMAND ----------
 
 # MAGIC %md
 # MAGIC 5. Apply following transformation logic:
@@ -35,17 +42,18 @@
 # MAGIC - component[1].valueQuantity.unit => diastolic_pressure_unit
 # MAGIC - component[1].interpretation[0].coding[0].display => diastolic_interpretation
 
+# COMMAND ----------
 
-# MAGIC %md
-# MAGIC 5. Create external Delta table *silver_observations*.
-# MAGIC  - partition data by *patient_id*
-# MAGIC  - enable *change data feed* support for the table
+# MAGIC %md 
+# MAGIC 6. Create external Delta table *silver_observations*.
+# MAGIC - partition data by patient_id
+# MAGIC - enable change data feed support for the table
 
+# COMMAND ----------
 
-# MAGIC %md
-# MAGIC 6. Write data to just created table.
+# MAGIC %md 
+# MAGIC 7. Write data to just created table.
 # MAGIC - Use *delta* as a storage format
 # MAGIC - Partition data by *patient_id*
 # MAGIC - Use *append* as output mode
 # MAGIC - Specify *checkpointLocation*
-
