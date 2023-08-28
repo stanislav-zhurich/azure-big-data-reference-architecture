@@ -1,5 +1,6 @@
 
 # Task 3 - Batching: copy from Bronze to Silver (refined) layer.
+> **Time to complete**: 3 hour
 ## Objective 
 As soon as data is saved in bronze (landing) zone, the next step is to perform basic data clean up and transformation. Data transformation will be done using Databricks notebook. As part of Data Factory pipeline we will invoke Databricks notebook passing the file name being stored in bronze layer. Notebook will be responsible for loading json data to dataframe, transforming it and storing in Delta table.
 ![objective](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task3-objective.png)
