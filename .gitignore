@@ -27,3 +27,5 @@ override.tf.json
 terraform.rc
 __azurite*.json
 __blobstorage__/*
+
+function.zip
