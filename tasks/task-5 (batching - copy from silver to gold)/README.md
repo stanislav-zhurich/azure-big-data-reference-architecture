@@ -8,7 +8,7 @@ Tables in Gold layer represent data that has been transformed into knowledge, ra
 2. Create new *CopyFromSilverToGold* Databricks Notebook activity.
 - Select *copyFromSilverToGold.py* notebook as a source.
 - Go to Settings->Base parameters and add following one:
-> patient_id = @string(activity(**'<name of the copy from bronze to silver activity>'**).output.runOutput)
+> patient_id = @string(activity(**'name of the copy from bronze to silver activity'**).output.runOutput)
 4. Connect with arrow previous activity with newly created using Data Factory UI.
 5. Save and publish changes.
 6. Go to Databricks cluster and open  _copyFromSilverToBronze.py_  notebook.
