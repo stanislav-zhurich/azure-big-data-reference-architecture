@@ -7,26 +7,18 @@ The goal of this task is to prepare Azure infrastrcructure to complete following
  2. [Terraform](https://www.terraform.io/) installed locally on your machine.
 > It's required to be connected to VPN once you are working from Belarus.
  3. [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) installed locally on your machine.
- 4. Your personal git account is available from public internet (e.g. GitHub). It will be used by Azure Data Factory to store its artifacts.
 ## Steps
  1. Navigate to */terraform/azure* and open *terraform.tvars* file.
- 2. Add your git account setting in the following way: 
-
->      git_account_name  =  git account name, e.g. "stanislav-zhurich"    
->      git_branch_name  =  name of the branch, e.g. "develop"    
->      git_repository_name  =  name of the repository, e.g. "azure-big-data-reference-architecture"
->      git_root_folder  =  name of the folder where resources will be located, e.g. "/"
->      git_url  =  name of your git provider, e.g. "https://github.com"
- 3. Navigate to */terraform/azure* folder and execute following command: `terraform install`. 
- 4. In the same directory execute command: `terraform apply`. Print `yes` once requested.
- 5. Installation might take some time, upon completion you will be provided with several endpoints, these are pathes to studios you will be working from. They will look like:
+ 2. Navigate to */terraform/azure* folder and execute following command: `terraform install`. 
+ 3. In the same directory execute command: `terraform apply`. Print `yes` once requested.
+ 4. Installation might take some time, upon completion you will be provided with several endpoints, these are pathes to studios you will be working from. They will look like:
 > databricks_studio_url = "https://adb-123456789.19.azuredatabricks.net"
 
 > datafactory_studio_url = "https://adf.azure.com/en/home"
  
 > synapse_studio_url = "https://web.azuresynapse.net?workspace=%2fsubscriptions%2f4d45zb6a-1310-f0g1-90c2-d82d4d3cbc5f%2fresourceGroups%2fbigdataaaec111lzix_rg%2fproviders%2fMicrosoft.Synapse%2fworkspaces%2fsynapse-workspace-bigdataaaec111lzix"
 
- 6. After completion you will have core components being installed within your subscription. The picture below depicts main services. 
+ 5. After completion you will have core components being installed within your subscription. The picture below depicts main services. 
 ![enter image description here](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/initial-infra-v1.png)
 ## Validation
  1. Go to your Azure Subscription and validate that following components were successfully deployed:
