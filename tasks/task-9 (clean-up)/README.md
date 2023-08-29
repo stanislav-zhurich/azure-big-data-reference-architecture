@@ -1,13 +1,11 @@
 # Task 9 - Clean up resources.
+> **Time to complete**: 1 hour
 ## Objective 
 After all task are completed we need to purge all resources created in scope of these exercises.
-
 ## Steps
-1. Go to Azure Portal and navigate to Azure Synapse Analytics.
-2. From within workspace go to Synapse Studio.
-3. Go to *Data -> Linked*.
-4. Select *datalake->gold->patient_observation_table* folder.
-5. Select *New SQL Script -> Select TOP 100 rows*.
-6. Select *Delta* format as *file type*.
-7. Run the query
+1. Run following commande from inside the project:
+> terraform\azure> terraform destroy
+2. Make sure it's completed successfully.
+3. Sometimes it might fail so you can go to Azure portal -> resource group and delete it expicitly. As long as all resources reside within the same resource group, they all be removed.
 ## Validation
+1. All resources are deleted.
