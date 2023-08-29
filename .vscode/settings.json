@@ -1,8 +1,0 @@
-{
-    "azureFunctions.javaBuildTool": "maven",
-    "azureFunctions.deploySubpath": "function/target/azure-functions/observation-generator",
-    "azureFunctions.projectLanguage": "Java",
-    "azureFunctions.projectRuntime": "~4",
-    "debug.internalConsoleOptions": "neverOpen",
-    "azureFunctions.preDeployTask": "package (functions)"
-}
