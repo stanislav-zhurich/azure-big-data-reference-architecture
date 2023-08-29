@@ -2,6 +2,7 @@
 
   
 # Task 6 - Streaming. Write Observations to Event Hub.
+> **Time to complete**: 3 hour
 ## Objective 
 In order to react fast on any abnormal patient's health metrics and conditions batching analytics is not enought. It's required to have an access to such event in real time. To achieve that, we wil be listening Delta table change data feeds and publish these changes to outbound event hub.
 ![context](https://raw.githubusercontent.com/stanislav-zhurich/azure-big-data-reference-architecture/main/images/task6-objective.png)
