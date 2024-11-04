@@ -29,7 +29,7 @@ resource "databricks_mount" "databricks_mount" {
   extra_configs = {
     "fs.azure.account.auth.type" : "OAuth",
     "fs.azure.account.oauth.provider.type" : "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
-    "fs.azure.account.oauth2.client.id" : azuread_service_principal.aad_service_sp.application_id
+    "fs.azure.account.oauth2.client.id" : azuread_service_principal.aad_service_sp.client_id
     "fs.azure.account.oauth2.client.secret" : "{{secrets/keyvault-managed/client-secret}}",
     "fs.azure.account.oauth2.client.endpoint" : "https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/oauth2/token",
     "fs.azure.createRemoteFileSystemDuringInitialization" : "false",
@@ -103,13 +103,13 @@ resource "azuread_application" "databricks_service_application" {
 }
 
 resource "azuread_service_principal" "aad_service_sp" {
-  application_id               = azuread_application.databricks_service_application.application_id
+  client_id =                  azuread_application.databricks_service_application.client_id
   app_role_assignment_required = false
   owners                       = [data.azuread_client_config.current.object_id]
 }
 
 resource "azuread_service_principal_password" "service_sp_pswd" {
-  service_principal_id = azuread_service_principal.aad_service_sp.object_id
+  service_principal_id = azuread_service_principal.aad_service_sp.id
 }
 
 
@@ -124,7 +124,7 @@ resource "azurerm_role_assignment" "databricks_dl_role_assignment" {
 resource "azurerm_key_vault_secret" "adb_client_id" {
   depends_on   = [azurerm_key_vault_access_policy.deployer_keyvault_policy]
   name         = "client-id"
-  value        = azuread_service_principal.aad_service_sp.application_id
+  value        = azuread_service_principal.aad_service_sp.client_id
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 

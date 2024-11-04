@@ -29,3 +29,5 @@ __azurite*.json
 __blobstorage__/*
 
 function.zip
+terraform/azure/.terraform.lock.hcl
+terraform/azure/.terraform.lock.hcl

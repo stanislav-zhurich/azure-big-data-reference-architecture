@@ -1,5 +1,5 @@
 resource "azurerm_eventhub_namespace" "eventhub_namespace" {
-  name                = "big-data-eventhub-namespace"
+  name                = substr("eventhub-namespace-${local.resource_prefix}", 0, 63)
   location            = azurerm_resource_group.resource_group.location
   resource_group_name = azurerm_resource_group.resource_group.name
   sku                 = "Basic"

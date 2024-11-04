@@ -8,7 +8,7 @@ resource "azurerm_service_plan" "service_plan" {
 }
 
 resource "azurerm_linux_function_app" "observation_function" {
-  name                = "observation-generator-function-app"
+  name                = substr("generator-function-app-${local.resource_prefix}", 0, 63)
   resource_group_name = azurerm_resource_group.resource_group.name
   location            = azurerm_resource_group.resource_group.location
 
