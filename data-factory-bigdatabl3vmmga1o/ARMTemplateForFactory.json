@@ -99,6 +99,36 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "CopyFromBronzeToSilver",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "CopyFromSourceToBronze",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver",
+							"baseParameters": {
+								"destination": "@pipeline().parameters.destination"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "databricksClusterLinkedService",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -116,7 +146,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/patient_data_source_json_file')]",
-				"[concat(variables('factoryId'), '/datasets/datalake_json_file')]"
+				"[concat(variables('factoryId'), '/datasets/datalake_json_file')]",
+				"[concat(variables('factoryId'), '/linkedServices/databricksClusterLinkedService')]"
 			]
 		},
 		{
