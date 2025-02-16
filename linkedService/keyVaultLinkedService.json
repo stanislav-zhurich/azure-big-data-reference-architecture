@@ -4,7 +4,7 @@
 	"properties": {
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://bigdatabl3vmmga1o-kv.vault.azure.net/"
+			"baseUrl": "https://bigdata3vg9fxunir-kv.vault.azure.net/"
 		},
 		"annotations": []
 	}

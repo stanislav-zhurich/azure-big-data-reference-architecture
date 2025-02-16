@@ -4,7 +4,7 @@
 	"properties": {
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "https://datalakebigdatabl3vmmga1.dfs.core.windows.net/"
+			"url": "https://datalakebigdata3vg9fxuni.dfs.core.windows.net/"
 		},
 		"annotations": []
 	}

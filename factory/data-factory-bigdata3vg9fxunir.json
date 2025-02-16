@@ -1,0 +1,9 @@
+{
+	"name": "data-factory-bigdata3vg9fxunir",
+	"location": "northeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7f6c6fb1-144d-4384-a391-07251732151d",
+		"tenantId": "728ec391-9e63-400e-883f-f7fd4a75ac01"
+	}
+}
