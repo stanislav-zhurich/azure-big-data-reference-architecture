@@ -39,7 +39,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "patient_data_source_json_file",
+						"referenceName": "patients_data_source_json_file",
 						"type": "DatasetReference",
 						"parameters": {
 							"trigger_file_name": "@pipeline().parameters.trigger_file_name"

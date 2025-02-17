@@ -1,5 +1,5 @@
 {
-	"name": "patient_data_source_json_file",
+	"name": "patients_data_source_json_file",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "blobSourceBlobStorageLinkedService",
@@ -15,7 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "@dataset().trigger_file_name",
+				"fileName": {
+					"value": "@dataset().trigger_file_name",
+					"type": "Expression"
+				},
 				"container": "patient-data-source"
 			}
 		},
