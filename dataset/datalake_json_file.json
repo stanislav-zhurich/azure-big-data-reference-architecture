@@ -1,0 +1,19 @@
+{
+	"name": "datalake_json_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "datalakeLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "@dataset().destination",
+				"fileSystem": "datalake"
+			}
+		},
+		"schema": {}
+	}
+}
