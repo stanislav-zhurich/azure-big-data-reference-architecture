@@ -1,5 +1,5 @@
 {
-	"name": "datalake_json_file",
+	"name": "datalake_patients_json_file",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "datalakeLinkedService",
@@ -15,7 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "@dataset().destination",
+				"fileName": {
+					"value": "@dataset().destination",
+					"type": "Expression"
+				},
 				"fileSystem": "datalake"
 			}
 		},

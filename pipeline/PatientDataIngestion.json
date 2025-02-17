@@ -48,7 +48,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "datalake_json_file",
+						"referenceName": "datalake_patients_json_file",
 						"type": "DatasetReference",
 						"parameters": {
 							"destination": "@pipeline().parameters.destination"
