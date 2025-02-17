@@ -47,7 +47,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "CopyFromSourceToBronze",
+						"name": "CopyFromPatientSourceToBronze",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -83,7 +83,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "patient_data_source_json_file",
+								"referenceName": "patients_data_source_json_file",
 								"type": "DatasetReference",
 								"parameters": {
 									"trigger_file_name": "@pipeline().parameters.trigger_file_name"
@@ -92,7 +92,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "datalake_json_file",
+								"referenceName": "datalake_patients_json_file",
 								"type": "DatasetReference",
 								"parameters": {
 									"destination": "@pipeline().parameters.destination"
@@ -105,7 +105,7 @@
 						"type": "DatabricksNotebook",
 						"dependsOn": [
 							{
-								"activity": "CopyFromSourceToBronze",
+								"activity": "CopyFromPatientSourceToBronze",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -148,13 +148,13 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/patient_data_source_json_file')]",
-				"[concat(variables('factoryId'), '/datasets/datalake_json_file')]",
+				"[concat(variables('factoryId'), '/datasets/patients_data_source_json_file')]",
+				"[concat(variables('factoryId'), '/datasets/datalake_patients_json_file')]",
 				"[concat(variables('factoryId'), '/linkedServices/databricksClusterLinkedService')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/datalake_json_file')]",
+			"name": "[concat(parameters('factoryName'), '/datalake_patients_json_file')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -186,7 +186,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/patient_data_source_json_file')]",
+			"name": "[concat(parameters('factoryName'), '/patients_data_source_json_file')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
