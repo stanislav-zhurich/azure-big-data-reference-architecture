@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "CopyFromSourceToBronze",
+				"name": "CopyFromPatientSourceToBronze",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -61,7 +61,7 @@
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
-						"activity": "CopyFromSourceToBronze",
+						"activity": "CopyFromPatientSourceToBronze",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -78,7 +78,10 @@
 				"typeProperties": {
 					"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver",
 					"baseParameters": {
-						"destination": "@pipeline().parameters.destination"
+						"destination": {
+							"value": "@pipeline().parameters.destination",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {
