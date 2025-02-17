@@ -5,6 +5,11 @@
 			"referenceName": "datalakeLinkedService",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"destination": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
