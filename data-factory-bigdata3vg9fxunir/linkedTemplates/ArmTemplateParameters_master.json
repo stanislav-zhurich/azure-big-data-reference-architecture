@@ -24,7 +24,7 @@
 			"value": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)"
 		},
 		"patient-data-source-trigger_properties_typeProperties_scope": {
-			"value": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdatabl3vmmga1o_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdatabl3vmmga1o"
+			"value": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdata3vg9fxunir_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdata3vg9fxunir"
 		},
 		"containerUri": {
 			"value": ""

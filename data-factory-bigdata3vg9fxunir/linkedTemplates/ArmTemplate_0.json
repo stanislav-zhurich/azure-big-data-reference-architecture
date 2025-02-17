@@ -33,7 +33,7 @@
 		},
 		"patient-data-source-trigger_properties_typeProperties_scope": {
 			"type": "string",
-			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdatabl3vmmga1o_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdatabl3vmmga1o"
+			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdata3vg9fxunir_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdata3vg9fxunir"
 		}
 	},
 	"variables": {
@@ -96,39 +96,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/datalake_patients_json_file')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "datalakeLinkedService",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"destination": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().destination",
-							"type": "Expression"
-						},
-						"fileSystem": "datalake"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/datalakeLinkedService')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/patients_data_source_json_file')]",
+			"name": "[concat(parameters('factoryName'), '/patient_data_source_json_file')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -146,10 +114,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().trigger_file_name",
-							"type": "Expression"
-						},
+						"fileName": "@dataset().trigger_file_name",
 						"container": "patient-data-source"
 					}
 				},
@@ -160,13 +125,42 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/datalake_json_file')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "datalakeLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"destination": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "@dataset().destination",
+						"fileSystem": "datalake"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/datalakeLinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PatientDataIngestion')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "CopyFromPatientSourceToBronze",
+						"name": "CopyFromSourceToBronze",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -202,7 +196,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "patients_data_source_json_file",
+								"referenceName": "patient_data_source_json_file",
 								"type": "DatasetReference",
 								"parameters": {
 									"trigger_file_name": "@pipeline().parameters.trigger_file_name"
@@ -211,46 +205,13 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "datalake_patients_json_file",
+								"referenceName": "datalake_json_file",
 								"type": "DatasetReference",
 								"parameters": {
 									"destination": "@pipeline().parameters.destination"
 								}
 							}
 						]
-					},
-					{
-						"name": "CopyFromBronzeToSilver",
-						"type": "DatabricksNotebook",
-						"dependsOn": [
-							{
-								"activity": "CopyFromPatientSourceToBronze",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver",
-							"baseParameters": {
-								"destination": {
-									"value": "@pipeline().parameters.destination",
-									"type": "Expression"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "databricksClusterLinkedService",
-							"type": "LinkedServiceReference"
-						}
 					}
 				],
 				"policy": {
@@ -267,9 +228,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/patients_data_source_json_file')]",
-				"[concat(variables('factoryId'), '/datasets/datalake_patients_json_file')]",
-				"[concat(variables('factoryId'), '/linkedServices/databricksClusterLinkedService')]"
+				"[concat(variables('factoryId'), '/datasets/patient_data_source_json_file')]",
+				"[concat(variables('factoryId'), '/datasets/datalake_json_file')]"
 			]
 		},
 		{
@@ -278,7 +238,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
