@@ -68,6 +68,12 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver.py",
+					"baseParameters": {
+						"destination": "@pipeline().parameters.destination"
+					}
+				},
 				"linkedServiceName": {
 					"referenceName": "databricksClusterLinkedService",
 					"type": "LinkedServiceReference"
