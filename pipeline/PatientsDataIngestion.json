@@ -1,5 +1,5 @@
 {
-	"name": "PatientDataIngestion",
+	"name": "PatientsDataIngestion",
 	"properties": {
 		"activities": [
 			{
