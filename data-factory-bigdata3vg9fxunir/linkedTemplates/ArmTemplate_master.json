@@ -1,0 +1,91 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "data-factory-bigdata3vg9fxunir"
+		},
+		"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://sourcebigdata3vg9fxunir.blob.core.windows.net"
+		},
+		"databricksClusterLinkedService_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0216-173906-75zu8mqj"
+		},
+		"datalakeLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://datalakebigdata3vg9fxuni.dfs.core.windows.net/"
+		},
+		"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://bigdata3vg9fxunir-kv.vault.azure.net/"
+		},
+		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
+		},
+		"patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination": {
+			"type": "string",
+			"defaultValue": "@concat('bronze/patient', '/', formatDateTime(utcnow(), 'yyyy'), '/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'), '/', trigger().outputs.body.fileName)"
+		},
+		"patient-data-source-trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/8b41bb3a-73a0-4041-90c2-d82d4d3cbc5f/resourceGroups/bigdatabl3vmmga1o_rg/providers/Microsoft.Storage/storageAccounts/sourcebigdatabl3vmmga1o"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "data-factory-bigdata3vg9fxunir_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('blobSourceBlobStorageLinkedService_properties_typeProperties_serviceEndpoint')]"
+					},
+					"databricksClusterLinkedService_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('databricksClusterLinkedService_properties_typeProperties_existingClusterId')]"
+					},
+					"datalakeLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('datalakeLinkedService_properties_typeProperties_url')]"
+					},
+					"keyVaultLinkedService_properties_typeProperties_baseUrl": {
+						"value": "[parameters('keyVaultLinkedService_properties_typeProperties_baseUrl')]"
+					},
+					"patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name": {
+						"value": "[parameters('patient-data-source-trigger_properties_PatientDataIngestion_parameters_trigger_file_name')]"
+					},
+					"patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination": {
+						"value": "[parameters('patient-data-source-trigger_properties_PatientDataIngestion_parameters_destination')]"
+					},
+					"patient-data-source-trigger_properties_typeProperties_scope": {
+						"value": "[parameters('patient-data-source-trigger_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
