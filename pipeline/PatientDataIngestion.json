@@ -26,12 +26,33 @@
 							"type": "JsonReadSettings"
 						}
 					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "patient_data_source_json_file",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"trigger_file_name": "@pipeline().parameters.trigger_file_name"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "datalake_json_file",
+						"type": "DatasetReference",
+						"parameters": {
+							"destination": "@pipeline().parameters.destination"
+						}
 					}
 				]
 			}
