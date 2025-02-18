@@ -122,7 +122,40 @@
 						"typeProperties": {
 							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromBronzeToSilver.py",
 							"baseParameters": {
-								"destination": "@pipeline().parameters.destination"
+								"destination": {
+									"value": "@pipeline().parameters.destination",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "databricksClusterLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "CopyFromSilverToGold",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "CopyFromBronzeToSilver",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/stanislav.zhurich@gmail.com/pipeline/copyFromSilverToGold.py",
+							"baseParameters": {
+								"patient_id": "@string(activity('CopyFromBronzeToSilver').output.runOutput)"
 							}
 						},
 						"linkedServiceName": {
